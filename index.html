@@ -77,9 +77,11 @@ h3.sec{margin:18px 0 4px}.sxh{display:flex;flex-direction:column;align-items:fle
 <div id="pv"></div>
 <nav class="tabs" id="tabs"></nav>
 <section id="pane"></section>
+<p class="note" id="ver" style="margin-top:24px;font-size:12px"></p>
 </main>
 <script>
 const $=s=>document.querySelector(s);
+const APP_VER='2026.10.17-0014';
 const K={kapak:{n:'Kapaklı alt',t:'alt',w:60},cekmece:{n:'Çekmeceli alt',t:'alt',w:60},evye:{n:'Evye altı',t:'alt',w:80},ocak:{n:'Ocak altı',t:'alt',w:60},kose:{n:'Köşe alt dolap',t:'alt',w:90},boy:{n:'Boy dolap',t:'boy',w:60},firin:{n:'Fırınlı boy',t:'boy',w:60},buz:{n:'Buzdolabı',t:'boy',w:70},kosb:{n:'Köşe boy dolap',t:'boy',w:60},raf:{n:'Açık raflı alt',t:'alt',w:60},rafb:{n:'Açık raflı boy',t:'boy',w:60}};
 const KU={ust:{n:'Kapaklı üst',w:60},klapa:{n:'Klapa kapaklı üst',w:80},uraf:{n:'Açık raflı üst',w:60},ukose:{n:'Köşe üst dolap',w:90},dav:{n:'Davlumbaz',w:60},bos:{n:'Boşluk',w:60}};
 const KA=k=>K[k]||KU[k];
@@ -789,9 +791,9 @@ function ofForm(){ofDef();const F=S.firm,O=S.of,i=(l,v,fn,t)=>`<label class="f">
 const P=[pMod,pLook,pAcc,pSum,pQuote];
 function R(){fixC();drawSVG();draw3D();drawPlan();$('#tabs').innerHTML=TABS.map((t,i)=>`<button class="${i==S.tab?'on':''}" onclick="S.tab=${i};R()">${t}</button>`).join('');$('#pane').innerHTML=P[S.tab]();save()}
 if(S.w>=S.walls.length)S.w=0;
-R();
+R();try{$('#ver').textContent='EB Design · Sürüm '+APP_VER}catch(e){}
 </script></body></html>
 
-<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{}))}</script>
 </body>
 </html>
