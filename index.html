@@ -38,6 +38,7 @@ h3{margin:0 0 8px;font-size:17px}
 #v3{background:var(--wallbg);border:1px solid var(--line);border-radius:6px;padding:6px}#v3c{display:block;width:100%;height:340px;touch-action:none;border-radius:4px;cursor:grab}
 #sv{background:var(--wallbg);border:1px solid var(--line);border-radius:6px;padding:6px}
 .lkg{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin:4px 0 12px}.lki{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;background:#fff;border:1px solid var(--line);border-radius:6px;color:#1D2421;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}.lki img{height:100px;width:auto;max-width:100%;object-fit:contain}.lki.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}.lkcur{display:flex;align-items:center;gap:10px;margin:6px 0}.lkcur img{height:72px;max-width:120px;object-fit:contain;border-radius:4px;background:#fff;border:1px solid var(--line);padding:2px}
+.mt{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}.mt th,.mt td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}.mt th{color:var(--mute);font-weight:600;font-size:12px;position:sticky;top:0;background:var(--bg)}
 .seg{display:flex;margin:4px 0 10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}.seg button{flex:1;padding:10px;border:0;background:var(--panel);font-weight:600;color:var(--mute)}.seg button.on{background:var(--acc);color:var(--accink)}
 .tabs{display:flex;gap:2px;margin:14px 0 12px;overflow-x:auto;border-bottom:1px solid var(--line)}
 .tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;font:inherit;font-weight:600;color:var(--mute);white-space:nowrap}
@@ -81,11 +82,21 @@ h3.sec{margin:18px 0 4px}.sxh{display:flex;flex-direction:column;align-items:fle
 </main>
 <script>
 const $=s=>document.querySelector(s);
-const APP_VER='2026.10.17-0014';
+const BZH=()=>{try{return (S&&S.bz)||15}catch(e){return 15}};
+const SG=()=>{try{return S}catch(e){return null}};
+const HT=()=>(SG()&&S.H)||230,TAC=()=>(SG()&&S.tac!=null)?S.tac:8,TOPC=()=>HT()-TAC(),YT=()=>250-TOPC(),FIT=()=>TOPC()-BZH();
+const TALL=['boy','firin','kosb','rafb'];
+const FUH=c=>c.k=='buz'&&c.fu!==0?Math.max(0,TOPC()-c.h-2):0;
+function tacSegs(W){const o=[];if(!TAC()||W.type=='ada')return o;const ad=(col,st,w,n)=>{const e=o.find(a=>a.col==col&&a.st==st);if(e){e.L+=w;e.n.push(n)}else o.push({col,st,L:w,n:[n]})};
+ W.cols.forEach(c=>{if(TALL.includes(c.k)||FUH(c)>=15)ad(c.ov.col||S.ct,c.k=='rafb'?'':(c.ov.style||S.sb),c.w,K[c.k].n)});
+ (W.up||[]).forEach(u=>{if(u.k!='bos'&&u.k!='dav')ad(u.ov.col||S.cw,u.k=='uraf'?'':(u.ov.style||S.su),u.w,KU[u.k].n)});return o}
+function setHt(f,v){const o=FIT();if(f=='H')S.H=Math.min(260,Math.max(200,+v||230));else if(f=='tac')S.tac=Math.min(20,Math.max(0,v===''?8:+v||0));else S.bz=Math.min(30,Math.max(5,+v||15));const n=FIT();
+ S.walls.forEach(W=>W.cols.forEach(c=>{if(TALL.includes(c.k)&&c.h==o)c.h=n}));MATR=null;R()}
+const APP_VER='2026.10.17-0046';
 const K={kapak:{n:'Kapaklı alt',t:'alt',w:60},cekmece:{n:'Çekmeceli alt',t:'alt',w:60},evye:{n:'Evye altı',t:'alt',w:80},ocak:{n:'Ocak altı',t:'alt',w:60},kose:{n:'Köşe alt dolap',t:'alt',w:90},boy:{n:'Boy dolap',t:'boy',w:60},firin:{n:'Fırınlı boy',t:'boy',w:60},buz:{n:'Buzdolabı',t:'boy',w:70},kosb:{n:'Köşe boy dolap',t:'boy',w:60},raf:{n:'Açık raflı alt',t:'alt',w:60},rafb:{n:'Açık raflı boy',t:'boy',w:60}};
 const KU={ust:{n:'Kapaklı üst',w:60},klapa:{n:'Klapa kapaklı üst',w:80},uraf:{n:'Açık raflı üst',w:60},ukose:{n:'Köşe üst dolap',w:90},dav:{n:'Davlumbaz',w:60},bos:{n:'Boşluk',w:60}};
 const KA=k=>K[k]||KU[k];
-const mku=(k,w,h)=>({k,w:w||KU[k].w,h:h||(k=='klapa'?40:70),d:k=='dav'?50:35,ov:{},cs:'r'});
+const mku=(k,w,h)=>({k,w:w||KU[k].w,h:h||(k=='klapa'?40:72),d:k=='dav'?50:35,ov:{},cs:'r'});
 const isU=c=>!!KU[c.k];
 const rowL=W=>S.row=='ust'&&W.type!='ada'?(W.up=W.up||[]):W.cols;
 const COLORS=[['Mat beyaz','#ECEAE4'],['Kum','#CDBFA8'],['Taş gri','#9B9D99'],['Antrasit','#3B3F42'],['Zeytin','#6B6A47'],['Orman yeşili','#2F4A3E'],['Kiremit','#A4533F'],['Lacivert','#2B3A55'],['Siyah','#1C1C1C'],['Meşe','#B88A5A'],['Ceviz','#6F4A30'],['RAL 9002 Gri beyaz','#E3E2D7'],['RAL 7044 İpek gri','#B8B4A8'],['Mozambik (Yıldız Entegre)','#6E5040'],['Navaro (Yıldız Entegre)','#C2A27A'],['Legnano (Yıldız Entegre)','#8E7B66'],['Hazar (Yıldız Entegre)','#B7A78E'],['Dubrovnik (Yıldız Entegre)','#A6825E'],['RAL 9010 Saf beyaz','#F1ECE1'],['RAL 7037 Toz gri','#7D7F7D'],['RAL 1019 Gri bej','#A48F7A'],['Kaşmir','#D8CDBE'],['Sis grisi','#B8BBBA']];
@@ -126,14 +137,14 @@ function sxAdd(fi,j,b){const f=SX[fi],i=f.i[j];S.sx=S.sx||[];S.sx.push({k:i[0],n
 const sxTot=()=>(S.sx||[]).reduce((a,x)=>a+x.q*x.p,0)*(1-(S.sxd||0)/100);
 function sxSel(){const L=S.sx||[];if(!L.length)return '<p class="note">Henüz ürün eklenmedi. Yukarıdaki listeden "Ekle" ile seç.</p>';
  return L.map((x,i)=>`<div class="qr"><div class="qh"><b>${esc(x.n)}</b><button class="chip" onclick="S.sx.splice(${i},1);R()">Sil</button></div><p class="mu" style="margin:2px 0 0">Kod ${x.k}${x.r?' · '+x.r:''} · liste fiyatı ${fm(x.lp)} TL</p><div class="g3">${x.rs.length>1?`<label class="f">Renk<select onchange="S.sx[${i}].r=this.value;R()">${x.rs.map(c=>`<option ${c==x.r?'selected':''}>${c}</option>`).join('')}</select></label>`:''}<label class="f">Adet<input type="number" inputmode="numeric" min="1" value="${x.q}" onchange="S.sx[${i}].q=Math.max(1,+this.value||1);R()"></label><label class="f">Birim (TL)<input type="number" inputmode="decimal" step="any" min="0" value="${x.p}" onchange="S.sx[${i}].p=Math.max(0,+this.value||0);R()"></label></div><div class="qt">${fm(x.q*x.p)} TL</div></div>`).join('')+`<label class="f">Starax iskontosu (%)<input type="number" inputmode="decimal" step="any" min="0" max="100" value="${S.sxd||0}" onchange="S.sxd=Math.min(100,Math.max(0,+this.value||0));R()"></label><div class="tot">Starax toplamı: ${fm(sxTot())} TL</div>`}
-const TABS=['Modüller','Kapak ve renk','Aksesuar','Özet','Teklif'];
-const DH={kapak:72,cekmece:72,evye:72,ocak:72,kose:72,boy:200,firin:200,buz:210,kosb:200,raf:72,rafb:200};
-const mk=(k,w,u)=>({k,w:w||K[k].w,u:0,ov:{},h:DH[k],uh:70,cs:'r',sh:'L',d:k=='kose'?90:k=='buz'?65:60});
+const TABS=['Modüller','Kapak ve renk','Aksesuar','Özet','Teklif','Malzeme'];
+const DH={kapak:72,cekmece:72,evye:72,ocak:72,kose:72,boy:207,firin:207,buz:180,kosb:207,raf:72,rafb:207};
+const mk=(k,w,u)=>({k,w:w||K[k].w,u:0,ov:{},h:TALL.includes(k)?FIT():DH[k],uh:72,fu:1,cs:'r',sh:'L',d:k=='kose'?90:k=='buz'?65:60});
 const bl=(x,y,w,h,col)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}" stroke="rgba(0,0,0,.35)" stroke-width=".6"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#000" fill-opacity=".18"/>`;
 function migU(W){if(W.type=='ada'){W.up=[];W.cols.forEach(c=>c.u=0);return}if(W.up)return;W.up=[];
  W.cols.forEach(c=>{const k=K[c.k];if(k.t=='alt'&&c.u){const u=c.k=='ocak'?mku('dav',c.w,c.uh):c.ut=='raf'?mku('uraf',c.w,c.uh):c.k=='kose'?Object.assign(mku('ukose',c.w,c.uh),{cs:c.cs}):mku('ust',c.w,c.uh);if(c.k!='ocak')u.ov={...c.ov};W.up.push(u)}else W.up.push(mku('bos',c.w));c.u=0});
  while(W.up.length&&W.up[W.up.length-1].k=='bos')W.up.pop()}
-function norm(s){s.walls.forEach(migU);const fx=v=>{if(!String(v).startsWith('lk')||STYLES[v])return v;const o=LKOLD(v);return STYLES[o]?o:'duz'};if(s.lkv){const v={};Object.keys(s.lkv).forEach(k=>{if(STYLES[k])v[k]=s.lkv[k]});s.lkv=v}['sa','su','sb'].forEach(k=>{if(s[k])s[k]=fx(s[k])});s.walls.forEach(W=>[...W.cols,...(W.up||[])].forEach(c=>{if(c.ov&&c.ov.style)c.ov.style=fx(c.ov.style)}));s.row=s.row=='ust'?'ust':'alt';s.sa=s.sa||s.style||'duz';s.su=s.su||s.style||'duz';s.sb=s.sb||s.style||'duz';s.walls.forEach(W=>{W.type=W.type||'duvar';W.cols.forEach(c=>{c.h=c.h||DH[c.k];c.uh=c.uh||70;c.cs=c.cs||'r';c.sh=c.sh||'L';c.d=c.d||(c.k=='buz'?65:60)})});return s}
+function norm(s){s.walls.forEach(migU);const fx=v=>{if(!String(v).startsWith('lk')||STYLES[v])return v;const o=LKOLD(v);return STYLES[o]?o:'duz'};if(s.lkv){const v={};Object.keys(s.lkv).forEach(k=>{if(STYLES[k])v[k]=s.lkv[k]});s.lkv=v}['sa','su','sb'].forEach(k=>{if(s[k])s[k]=fx(s[k])});s.walls.forEach(W=>[...W.cols,...(W.up||[])].forEach(c=>{if(c.ov&&c.ov.style)c.ov.style=fx(c.ov.style)}));s.row=s.row=='ust'?'ust':'alt';s.sa=s.sa||s.style||'duz';s.su=s.su||s.style||'duz';s.sb=s.sb||s.style||'duz';s.walls.forEach(W=>{W.type=W.type||'duvar';W.cols.forEach(c=>{c.h=c.h||DH[c.k];c.uh=c.uh||70;c.cs=c.cs||'r';c.sh=c.sh||'L';c.d=c.d||(c.k=='buz'?65:60)})});if(!s.H){s.H=230;s.tac=8;const ft=230-8-((s.bz)||15);s.walls.forEach(W=>{W.cols.forEach(c=>{if(TALL.includes(c.k)&&[195,200,210,215].includes(c.h))c.h=ft;if(c.k=='buz'){if(c.h>=200)c.h=180;c.fu=1}});(W.up||[]).forEach(u=>{if(u.h==70)u.h=72})})}return s}
 function def(){return{walls:[{len:400,cols:[mk('buz',70),mk('firin'),mk('kapak'),mk('evye'),mk('cekmece'),mk('ocak')],up:[mku('bos',70),mku('bos',60),mku('ust'),mku('ust',80),mku('ust'),mku('dav')]}],row:'alt',w:0,sel:-1,tab:0,style:'duz',cb:'#2F4A3E',cw:'#ECEAE4',ct:'#B88A5A',top:'#222427',hd:'#B8943F',acc:{},rate:0}}
 function load(){try{const s=JSON.parse(localStorage.getItem('mk1'));return s&&s.walls&&s.walls.length?s:null}catch(e){return null}}
 function save(){try{localStorage.setItem('mk1',JSON.stringify(S))}catch(e){}}
@@ -178,9 +189,9 @@ const dr=(x,y,w,h,col,st,hd)=>w>=70?pn(x,y,w/2,h,col,st,hd=='r'?'r':hd)+pn(x+w/2
 
 function colSVG(c,i,x){
  const k=K[c.k],st=c.ov.style||(K[c.k].t=='alt'?S.sa:S.sb),su=c.ov.style||S.su,w=c.w,h=c.h,alt=k.t=='alt',isl=S.walls[S.w].type=='ada';
- const col=c.ov.col||(alt?S.cb:S.ct),wc=c.ov.col||S.cw,T=240-h;
+ const col=c.ov.col||(alt?S.cb:S.ct),wc=c.ov.col||S.cw,T=250-BZH()-h;
  let o=`<g data-i="${i}" style="cursor:pointer">`;
- if(c.k!='buz')o+=`<rect x="${x}" y="240" width="${w}" height="10" fill="#2a2d2c"/>`;
+ if(c.k!='buz')o+=`<rect x="${x}" y="${250-BZH()}" width="${w}" height="${BZH()}" fill="#2a2d2c"/>`;
  if(alt){
   if(c.k=='cekmece')for(let j=0;j<3;j++)o+=pn(x,T+j*h/3,w,h/3,col,st,'t');
   else if(c.k=='ocak')o+=pn(x,T,w,22,col,st,'t')+pn(x,T+22,w,h-22,col,st,'t');
@@ -189,23 +200,26 @@ function colSVG(c,i,x){
   else o+=dr(x,T,w,h,col,st,'r');
   o+=`<rect x="${x}" y="${T-4}" width="${w}" height="4" fill="${S.top}"/>`;
   if(c.k=='evye')o+=`<path d="M${x+w/2} ${T-4}v-14q0-8 8-8" fill="none" stroke="#C9CCCF" stroke-width="2"/>`;
-  if(c.u&&!isl){const u=c.uh;if(c.k=='ocak')o+=`<rect x="${x+w*.3}" y="40" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${40+u} ${x+w-3},${40+u} ${x+w*.72},${40+u*.4} ${x+w*.28},${40+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;else if(c.ut=='raf')o+=os(x,40,w,u,wc);else if(c.k=='kose'){const b=Math.min(30,w/2),L=c.cs=='l';o+=pn(x+(L?b:0),40,w-b,u,wc,su,'b')+bl(L?x:x+w-b,40,b,u,wc)}else o+=dr(x,40,w,u,wc,su,'b')}
+  if(c.u&&!isl){const u=c.uh,Y=YT();if(c.k=='ocak')o+=`<rect x="${x+w*.3}" y="${Y}" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${Y+u} ${x+w-3},${Y+u} ${x+w*.72},${Y+u*.4} ${x+w*.28},${Y+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;else if(c.ut=='raf')o+=os(x,Y,w,u,wc);else if(c.k=='kose'){const b=Math.min(30,w/2),L=c.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,su,'b')+bl(L?x:x+w-b,Y,b,u,wc)}else o+=dr(x,Y,w,u,wc,su,'b')}
  }else if(c.k=='kosb'){const b=Math.min(30,w/2),L=c.cs=='l',X=x+(L?b:0);o+=pn(X,T,w-b,h/2,col,st,L?'r':'l')+pn(X,T+h/2,w-b,h/2,col,st,L?'r':'l')+bl(L?x:x+w-b,T,b,h,col)}else if(c.k=='rafb')o+=os(x,T,w,h,col);else if(c.k=='boy')o+=dr(x,T,w,h/2,col,st,'r')+dr(x,T+h/2,w,h/2,col,st,'r');
  else if(c.k=='firin')o+=dr(x,T,w,h-140,col,st,'r')+`<rect x="${x+1}" y="${T+h-140}" width="${w-2}" height="58" fill="#202224"/><rect x="${x+8}" y="${T+h-128}" width="${w-16}" height="34" rx="2" fill="#3a3e42"/>`+pn(x,T+h-82,w,41,col,st,'t')+pn(x,T+h-41,w,41,col,st,'t');
- else{const B=250-h;o+=`<rect x="${x+.5}" y="${B}" width="${w-1}" height="${h}" fill="#C3C7CA" stroke="rgba(0,0,0,.35)" stroke-width=".6"/><line x1="${x}" x2="${x+w}" y1="${B+h*.52}" y2="${B+h*.52}" stroke="rgba(0,0,0,.4)"/><rect x="${x+w-6}" y="${B+h*.1}" width="1.6" height="30" fill="#7c8083"/><rect x="${x+w-6}" y="${B+h*.58}" width="1.6" height="30" fill="#7c8083"/>`}
+ else{const B=250-h;o+=`<rect x="${x+.5}" y="${B}" width="${w-1}" height="${h}" fill="#C3C7CA" stroke="rgba(0,0,0,.35)" stroke-width=".6"/><line x1="${x}" x2="${x+w}" y1="${B+h*.52}" y2="${B+h*.52}" stroke="rgba(0,0,0,.4)"/><rect x="${x+w-6}" y="${B+h*.1}" width="1.6" height="30" fill="#7c8083"/><rect x="${x+w-6}" y="${B+h*.58}" width="1.6" height="30" fill="#7c8083"/>`;
+  const fh=FUH(c);if(fh>=15)o+=pn(x,YT(),w,fh,col,st,'b')+`<path d="M${x+w/2-5} ${YT()+fh*.5+2}l5 -5l5 5" fill="none" stroke="rgba(0,0,0,.45)" stroke-width="1"/>`}
+ if(TAC()&&!alt&&(TALL.includes(c.k)||FUH(c)>=15)){const ty=250-BZH()-h-TAC();o+=`<rect x="${x}" y="${c.k=='buz'?250-HT():ty}" width="${w}" height="${TAC()}" fill="${col}" stroke="rgba(0,0,0,.35)" stroke-width=".6"/>`}
  o+=`<text x="${x+w/2}" y="260" text-anchor="middle" font-size="9" fill="var(--mute)">${w}</text>`;
- if(i==S.sel&&S.row!='ust')o+=`<rect x="${x}" y="${Math.min(T,250-h)-8}" width="${w}" height="${250-Math.min(T,250-h)+10}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
+ const tY=c.k=='buz'&&FUH(c)>=15?250-HT():Math.min(T,250-h)-(alt?0:TAC());if(i==S.sel&&S.row!='ust')o+=`<rect x="${x}" y="${tY-8}" width="${w}" height="${250-tY+10}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
  return o+'</g>'}
 
-function upSVG(m,i,x){const w=m.w,u=m.h,st=m.ov.style||S.su,wc=m.ov.col||S.cw;let o=`<g data-r="u" data-i="${i}" style="cursor:pointer">`;
- if(m.k=='bos')o+=`<rect x="${x+1}" y="40" width="${w-2}" height="${u}" fill="none" stroke="var(--mute)" stroke-opacity=".5" stroke-dasharray="2 3"/>`;
- else if(m.k=='dav')o+=`<rect x="${x+w*.3}" y="40" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${40+u} ${x+w-3},${40+u} ${x+w*.72},${40+u*.4} ${x+w*.28},${40+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;
- else if(m.k=='uraf')o+=os(x,40,w,u,wc);
- else if(m.k=='klapa')o+=pn(x,40,w,u,wc,st,'b');
- else if(m.k=='ukose'){const b=Math.min(30,w/2),L=m.cs=='l';o+=pn(x+(L?b:0),40,w-b,u,wc,st,'b')+bl(L?x:x+w-b,40,b,u,wc)}
- else o+=dr(x,40,w,u,wc,st,'b');
- o+=`<text x="${x+w/2}" y="34" text-anchor="middle" font-size="8" fill="var(--mute)">${w}</text>`;
- if(S.row=='ust'&&i==S.sel)o+=`<rect x="${x}" y="36" width="${w}" height="${u+8}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
+function upSVG(m,i,x){const w=m.w,u=m.h,st=m.ov.style||S.su,wc=m.ov.col||S.cw;const Y=YT();let o=`<g data-r="u" data-i="${i}" style="cursor:pointer">`;
+ if(m.k=='bos')o+=`<rect x="${x+1}" y="${Y}" width="${w-2}" height="${u}" fill="none" stroke="var(--mute)" stroke-opacity=".5" stroke-dasharray="2 3"/>`;
+ else if(m.k=='dav')o+=`<rect x="${x+w*.3}" y="${Y}" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${Y+u} ${x+w-3},${Y+u} ${x+w*.72},${Y+u*.4} ${x+w*.28},${Y+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;
+ else if(m.k=='uraf')o+=os(x,Y,w,u,wc);
+ else if(m.k=='klapa')o+=pn(x,Y,w,u,wc,st,'b');
+ else if(m.k=='ukose'){const b=Math.min(30,w/2),L=m.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,st,'b')+bl(L?x:x+w-b,Y,b,u,wc)}
+ else o+=dr(x,Y,w,u,wc,st,'b');
+ if(TAC()&&m.k!='bos'&&m.k!='dav')o+=`<rect x="${x}" y="${Y-TAC()}" width="${w}" height="${TAC()}" fill="${wc}" stroke="rgba(0,0,0,.35)" stroke-width=".6"/>`;
+ o+=`<text x="${x+w/2}" y="${250-HT()-3}" text-anchor="middle" font-size="8" fill="var(--mute)">${w}</text>`;
+ if(S.row=='ust'&&i==S.sel)o+=`<rect x="${x}" y="${Y-4-TAC()}" width="${w}" height="${u+8+TAC()}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
  return o+'</g>'}
 function offU(wi){const A=S.walls,W=A[wi];if(W.type=='ada')return 0;const dv=A.filter(a=>a.type=='duvar'),k=dv.indexOf(W);if(k<1)return 0;const M=dv[0].up||[],m=k==1?M[M.length-1]:M[0];return m&&m.k!='bos'?m.d:0}
 const lp=(c,x,y)=>{const a=Math.min(60,c.w-10,c.d-10),w=c.w,d=c.d;return c.cs=='l'?`M${x} ${y}h${w}v${a}h${-(w-a)}v${d-a}h${-a}z`:`M${x} ${y}h${w}v${d}h${-a}v${-(d-a)}h${-(w-a)}z`};
@@ -231,12 +245,13 @@ function fixC(){const dv=S.walls.filter(W=>W.type=='duvar');if(!dv.length)return
 function drawSVG(){
  const W=S.walls[S.w],f=off(S.w),tot=W.cols.reduce((a,c)=>a+c.w,0),e=f+tot,fu=offU(S.w),eu=fu+(W.type=='ada'?0:(W.up||[]).reduce((a,m)=>a+m.w,0)),L=Math.max(W.len,e,eu);
  let x=f,o=`<rect x="0" y="0" width="${L}" height="250" fill="var(--wallbg)"/><line x1="-6" x2="${L+6}" y1="250" y2="250" stroke="var(--ink)" stroke-width="1.5"/>`;
- if(f)o+=`<rect x="0" y="40" width="${f}" height="210" fill="none" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="${f/2}" y="145" text-anchor="middle" font-size="9" fill="var(--mute)">köşe</text>`;
+ if(f)o+=`<rect x="0" y="${YT()}" width="${f}" height="${TOPC()}" fill="none" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="${f/2}" y="145" text-anchor="middle" font-size="9" fill="var(--mute)">köşe</text>`;
  W.cols.forEach((c,i)=>{o+=colSVG(c,i,x);x+=c.w});
  if(W.type!='ada'){let xu=fu;(W.up||[]).forEach((m,i)=>{o+=upSVG(m,i,xu);xu+=m.w});if(eu>W.len)o+=`<line x1="${W.len}" x2="${W.len}" y1="20" y2="130" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="4 3"/>`}
- if(W.len>e)o+=`<rect x="${e}" y="40" width="${W.len-e}" height="210" fill="none" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="${e+(W.len-e)/2}" y="145" text-anchor="middle" font-size="9" fill="var(--mute)">${W.len-e} cm boş</text>`;
+ if(W.len>e)o+=`<rect x="${e}" y="${YT()}" width="${W.len-e}" height="${TOPC()}" fill="none" stroke="var(--mute)" stroke-dasharray="4 3"/><text x="${e+(W.len-e)/2}" y="145" text-anchor="middle" font-size="9" fill="var(--mute)">${W.len-e} cm boş</text>`;
  if(e>W.len)o+=`<line x1="${W.len}" x2="${W.len}" y1="20" y2="250" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="4 3"/>`;
- $('#sv').innerHTML=`<svg viewBox="-6 0 ${L+12} 264" role="img" aria-label="Mutfak cephe görünüşü" style="width:100%;display:block">${o}</svg>`}
+ {const t=250-HT(),dm=(y1,y2,lb)=>`<line x1="-12" x2="-12" y1="${y1}" y2="${y2}" stroke="var(--mute)" stroke-width=".7"/><line x1="-15" x2="-9" y1="${y1}" y2="${y1}" stroke="var(--mute)" stroke-width=".7"/><line x1="-15" x2="-9" y1="${y2}" y2="${y2}" stroke="var(--mute)" stroke-width=".7"/><text x="-14" y="${(y1+y2)/2}" font-size="7" fill="var(--mute)" text-anchor="middle" transform="rotate(-90 -14 ${(y1+y2)/2})">${lb}</text>`;o+=dm(t,250,HT()+' cm')}
+ $('#sv').innerHTML=`<svg viewBox="-20 ${Math.min(0,240-HT())} ${L+26} ${264-Math.min(0,240-HT())}" role="img" aria-label="Mutfak cephe görünüşü" style="width:100%;display:block">${o}</svg>`}
 $('#sv').onclick=e=>{const g=e.target.closest('[data-i]');if(g){S.row=g.dataset.r=='u'?'ust':'alt';S.sel=+g.dataset.i;S.tab=0;R()}};
 
 const cur=()=>rowL(S.walls[S.w])[S.sel];
@@ -257,7 +272,7 @@ function adaTog(){const j=S.walls.findIndex(W=>W.type=='ada');
  S.w=0;S.sel=-1;R()}
 function setCs(v){cur().cs=v;R()}
 function setW(v){cur().w=Math.min(200,Math.max(20,+v||60));R()}
-function setD(f,v){const c=cur(),u=isU(c),a=!u&&K[c.k].t=='alt',r=u?{h:[20,120],d:[20,70]}[f]:{h:a?[50,120]:[150,240],uh:[30,120],d:[30,120]}[f];c[f]=Math.min(r[1],Math.max(r[0],+v||r[0]));R()}
+function setD(f,v){const c=cur(),u=isU(c),a=!u&&K[c.k].t=='alt',r=u?{h:[20,Math.min(150,TOPC()-100)],d:[20,70]}[f]:{h:a?[50,120]:c.k=='buz'?[120,TOPC()-2]:[150,TOPC()-BZH()],uh:[30,120],d:[30,120]}[f];c[f]=Math.min(r[1],Math.max(r[0],+v||r[0]));R()}
 function setU(b){cur().u=b?1:0;R()}
 function ovs(v){if(v)cur().ov.style=v;else delete cur().ov.style;R()}
 function ovc(h){if(h)cur().ov.col=h;else delete cur().ov.col;R()}
@@ -272,6 +287,7 @@ function pMod(){
  let h=`<p class="lb">Yerleşim</p><div class="row">`+[['Düz hat',1],['L',2],['U',3]].map(([t,v])=>`<button class="chip ${n==v?'on':''}" onclick="lay(${v})">${t}</button>`).join('')+`<button class="chip ${hasI?'on':''}" onclick="adaTog()">${hasI?'Adayı kaldır':'Ada ekle'}</button></div>`+(n>1?turnRow(n):'');
  h+=`<div class="row">`+S.walls.map((a,i)=>`<button class="chip ${i==S.w?'on':''}" onclick="S.w=${i};S.sel=-1;R()">${wn(a,i)}</button>`).join('')+`</div>`;
  if(!ada)h+=`<div class="seg" role="group" aria-label="Modül sırası"><button class="${up?'':'on'}" onclick="S.row='alt';S.sel=-1;R()">Alt modüller</button><button class="${up?'on':''}" onclick="S.row='ust';S.sel=-1;R()">Üst modüller</button></div>`;
+ h+=`<details class="ed"${S.hto?' open':''} ontoggle="S.hto=this.open"><summary><b>Yükseklikler</b> · toplam ${HT()} cm, taç ${TAC()} cm, baza ${BZH()} cm</summary><div class="g3"><label class="f">Mutfak yüksekliği, taç dahil (cm)<input type="number" inputmode="numeric" value="${HT()}" onchange="setHt('H',this.value)"></label><label class="f">Taç (cm, 0 = yok)<input type="number" inputmode="numeric" value="${TAC()}" onchange="setHt('tac',this.value)"></label><label class="f">Baza (cm)<input type="number" inputmode="numeric" value="${BZH()}" onchange="setHt('bz',this.value)"></label></div><p class="note">Üst dolap ve boy dolap gövdesi ${TOPC()} cm'de biter, üstüne ${TAC()} cm taç gelir. Boy dolap gövdesi ${FIT()} cm. Değiştirince standart yükseklikteki boy dolaplar kendiliğinden uyar.</p></details>`;
  h+=`<label class="f">${wn(W,S.w)} uzunluğu (cm${f?', köşe dahil':''})<input type="number" inputmode="numeric" min="60" max="900" value="${W.len}" onchange="S.walls[S.w].len=Math.max(60,+this.value||60);R()"></label>`;
  h+=`<p class="note ${d<0?'bad':''}">${d<0?(-d)+' cm taşma var.':d==0?'Tam dolu.':d+' cm boş alan var, modül veya dolgu ekleyin.'} ${f?`Köşe payı ${f} cm, modülleri köşeden başlayarak diz. `:''}${up?'Üst':'Alt'} modüller toplamı: ${tot} cm.${up?' Boy dolap ve buzdolabının üstünde boşluk modülü kullan.':''}</p>`;
  h+=`<p class="lb">${up?'Üst modül ekle':'Alt modül ekle'}</p><div class="row">`+Object.entries(up?KU:K).filter(([k,v])=>up||!ada||v.t=='alt').map(([k,v])=>`<button class="add" onclick="add('${k}')">${v.n}</button>`).join('')+`</div>`;
@@ -279,6 +295,7 @@ function pMod(){
  if(S.sel>=0&&RL[S.sel]){const c=cur(),k=KA(c.k),I=(l,f,v,fn)=>`<label class="f">${l}<input type="number" inputmode="numeric" value="${v}" onchange="${fn}">`+`</label>`;
   h+=`<div class="ed"><h3>${k.n}</h3><p class="lb">Ölçüler cm: genişlik, yükseklik, derinlik</p><div class="g3">${I('Genişlik','w',c.w,'setW(this.value)')}${I('Yükseklik','h',c.h,"setD('h',this.value)")}${I('Derinlik','d',c.d,"setD('d',this.value)")}</div><div class="row">${[30,40,45,60,80,90,100].map(v=>`<button class="chip ${c.w==v?'on':''}" onclick="setW(${v})">${v}</button>`).join('')}</div>`;
   if(c.k=='kose'||c.k=='kosb'||c.k=='ukose')h+=`<p class="lb">Köşe tarafı (kör panel)</p><div class="row">${[['r','Sağ'],['l','Sol']].map(([a,b])=>`<button class="chip ${c.cs==a?'on':''}" onclick="setCs('${a}')">${b}</button>`).join('')}</div>`;
+  if(c.k=='buz'){const fh=FUH(c);h+=`<p class="note">Yükseklik buzdolabının kendi yüksekliğidir.</p><label class="chk"><input type="checkbox" ${c.fu!==0?'checked':''} onchange="cur().fu=this.checked?1:0;R()"> Üstüne yukarı açılır (klapa) dolap ekle</label>${c.fu!==0?(fh>=15?`<p class="note">Klapa dolap: ${c.w} × ${fh} × ${c.d} cm, buzdolabının 2 cm üstünden ${TOPC()} cm'ye kadar. Boy kapak modeli ve rengini kullanır.</p>`:`<p class="note bad">Buzdolabı üstünde dolap için yer yok (en az 15 cm gerekir).</p>`):''}`}
   if(c.k=='kose')h+=`<p class="lb">Köşe tipi (planda)</p><div class="row">${[['L','L şekilli'],['kare','Kare']].map(([a,b])=>`<button class="chip ${c.sh==a?'on':''}" onclick="cur().sh='${a}';R()">${b}</button>`).join('')}</div>`;
   if(up&&c.k!='bos'&&c.k!='dav'&&S.led!==0)h+=`<p class="note">Altında LED aydınlatma var (render ayarından kapatılabilir).</p>`;
   if(!['bos','dav','uraf','raf','rafb','buz'].includes(c.k))h+=`<label class="f">Bu modülün kapak modeli<select onchange="ovs(this.value)"><option value="">Genel ayar: ${STYLES[up?S.su:k.t=='alt'?S.sa:S.sb]}</option>${BASIC.map(a=>`<option value="${a}" ${c.ov.style==a?'selected':''}>${STYLES[a]}</option>`).join('')}${lkOpts(c.ov.style)}</select></label>${lkCur(c.ov.style||'')}<div class="row"><button class="chip ${PK=='ov'?'on':''}" onclick="PK=PK=='ov'?null:'ov';R()">${PK=='ov'?'Kataloğu kapat':'Lake Kapak kataloğundan seç'}</button></div>`+(PK=='ov'?lkPicker('ov',c.ov.style):'');
@@ -301,7 +318,7 @@ function pSum(){
  let t=[],mt=0,np=0;
  S.walls.forEach((W,wi)=>{t.push(`${wn(W,wi)}: ${W.len} cm`);if(W.type!='ada')(W.up||[]).forEach(u=>{if(u.k=='bos')return;np+={ust:u.w>=70?2:1,klapa:1,ukose:1}[u.k]||0;t.push(`- Üst: ${KU[u.k].n}, ${u.w}×${u.h}×${u.d} cm`+(u.ov.style?`, ${STYLES[u.ov.style]} kapak`:'')+(u.ov.col?`, ${nm(COLORS,u.ov.col)}`:''))});W.cols.forEach(c=>{mt+=c.w;np+=pc(c);t.push(`- ${K[c.k].n}, ${c.w}×${c.h}×${c.d} cm (G×Y×D)`+(c.u&&K[c.k].t=='alt'?(c.k=='ocak'?', davlumbazlı':c.ut=='raf'?', üstte açık raf':', üst dolaplı'):'')+(c.ov.style?`, ${STYLES[c.ov.style]} kapak`:'')+(c.ov.col?`, ${nm(COLORS,c.ov.col)}`:''))})});
  const tz=S.walls.reduce((a,W)=>a+W.cols.filter(c=>K[c.k].t=='alt').reduce((b,c)=>b+c.w,0),0),kn=S.walls.reduce((a,W)=>a+W.cols.filter(c=>c.k=='kose').length,0);
- t.push('',`Tezgah metrajı: ${tz} cm (alt dolap genişlikleri toplamı), köşe kesimi: ${kn} adet`,`Kapak: alt ${STYLES[S.sa]}, üst ${STYLES[S.su]}, boy ${STYLES[S.sb]}`,`Alt: ${nm(COLORS,S.cb)}, Üst: ${nm(COLORS,S.cw)}, Boy: ${nm(COLORS,S.ct)}`,`Tezgah: ${nm(TOPS,S.top)}, Kulp: ${nm(HANDLES,S.hd)}`,`Toplam modül genişliği: ${mt} cm, kapak ve çekmece paneli: ${np}`);
+ t.push('',`Yükseklik: toplam ${HT()} cm (baza ${BZH()}, gövde üstü ${TOPC()}, taç ${TAC()} cm)`,`Tezgah metrajı: ${tz} cm (alt dolap genişlikleri toplamı), köşe kesimi: ${kn} adet`,`Kapak: alt ${STYLES[S.sa]}, üst ${STYLES[S.su]}, boy ${STYLES[S.sb]}`,`Alt: ${nm(COLORS,S.cb)}, Üst: ${nm(COLORS,S.cw)}, Boy: ${nm(COLORS,S.ct)}`,`Tezgah: ${nm(TOPS,S.top)}, Kulp: ${nm(HANDLES,S.hd)}`,`Toplam modül genişliği: ${mt} cm, kapak ve çekmece paneli: ${np}`);
  let ac=0,al=[];ACC.forEach((n,i)=>{const a=S.acc[i];if(a&&a.on){ac+=a.q*a.p;al.push(`- ${n}: ${a.q} adet`)}});
  (S.sx||[]).forEach(x=>al.push(`- Starax ${x.k}${x.r?' '+x.r:''}, ${x.n}: ${x.q} adet`));if(al.length)t.push('','Aksesuarlar',...al);
  const md=mt*S.rate;
@@ -314,7 +331,9 @@ function mtr(){const m={},add=(k,q,a)=>{m[k]=m[k]||{q:0,a:0};m[k].q+=q;m[k].a+=a
  S.walls.forEach(W=>W.cols.forEach(c=>{const t=K[c.k].t,o=c.ov.style;
   if(t=='alt'){add('alt|'+(c.k=='raf'?'acik':o||S.sa),c.w,c.w*c.h/1e4);add('tez',c.w+(c.k=='kose'?c.d:0),0);
    if(c.u&&W.type!='ada'){if(c.k=='ocak')add('dav',1,0);else add('ust|'+(c.ut=='raf'?'acik':o||S.su),c.w,c.w*c.uh/1e4)}}
-  else if(c.k!='buz')add('boy|'+(c.k=='rafb'?'acik':o||S.sb),c.w,c.w*c.h/1e4)}));
+  else if(c.k!='buz')add('boy|'+(c.k=='rafb'?'acik':o||S.sb),c.w,c.w*c.h/1e4);
+  else{const fh=FUH(c);if(fh>=15)add('ust|'+(o||S.sb),c.w,c.w*fh/1e4)}}));
+ S.walls.forEach(W=>tacSegs(W).forEach(t=>add('tac',t.L,t.L*TAC()/1e4)));
  S.walls.forEach(W=>{if(W.type=='ada')return;(W.up||[]).forEach(u=>{if(u.k=='bos')return;if(u.k=='dav'){add('dav',1,0);return}add('ust|'+(u.k=='uraf'?'acik':u.ov.style||S.su),u.w,u.w*u.h/1e4)})});return m}
 function pQuote(){
  const m=mtr(),P=S.pr=S.pr||{},u2=S.unit=='m2',U=u2?'m²':'mtül',kdv=S.kdv==null?20:S.kdv,disc=S.disc||0,mont=S.mont||0;
@@ -323,6 +342,7 @@ function pQuote(){
   return `<div class="qr"><div class="qh"><b>${n}</b><span>${nf(q)} ${u}</span></div><label class="f">Birim fiyat (TL / ${u})<input type="number" inputmode="decimal" step="any" min="0" value="${p}" onchange="S.pr['${key}']=Math.max(0,+this.value||0);R()"></label><div class="qt">${fm(tt)} TL</div></div>`};
  [['alt','Alt dolap'],['ust','Üst dolap'],['boy','Boy dolap']].forEach(([c,n])=>Object.keys(m).filter(k=>k.startsWith(c+'|')).forEach(k=>{rows+=line(k+(u2?'|m2':''),(k.split('|')[1]=='acik'?`${n}, açık raf (kapaksız)`:`${n}, ${SN(k.split('|')[1])} kapak`),U,u2?m[k].a:m[k].q/100)}));
  if(m.tez)rows+=line('tez','Tezgah','mtül',m.tez.q/100);
+ if(m.tac)rows+=line('tac',`Taç (${TAC()} cm)`,'mtül',m.tac.q/100);
  if(m.dav)rows+=line('dav','Davlumbaz','adet',m.dav.q);
  let ac=0;ACC.forEach((n,i)=>{const a=S.acc[i];if(a&&a.on){const tt=a.q*a.p;ac+=tt;tx.push(`${n}: ${a.q} adet × ${fm(a.p)} TL = ${fm(tt)} TL`)}});
  (S.sx||[]).forEach(x=>tx.push(`Starax ${x.k}${x.r?' '+x.r:''}, ${x.n}: ${x.q} adet × ${fm(x.p)} TL = ${fm(x.q*x.p)} TL`));if(S.sx&&S.sx.length){if(S.sxd)tx.push(`Starax iskontosu %${S.sxd}`);ac+=sxTot()}
@@ -393,9 +413,9 @@ function modParts(c,isl,B0,BU){let B=B0;
  const dd=(x0,y0,x1,y1,cl,s,hd,z)=>{if(x1-x0>=70){const m=(x0+x1)/2;door(x0,y0,m,y1,cl,s,hd=='r'?'l':hd,z);door(m,y0,x1,y1,cl,s,hd=='r'?'r':hd,z)}else door(x0,y0,x1,y1,cl,s,hd,z)};
  const open=(x0,y0,x1,y1,dp,cl)=>{const t=1.8;B(x0,y0,0,x1,y1,t,cl,0);B(x0,y0,0,x0+t,y1,dp,cl,1);B(x1-t,y0,0,x1,y1,dp,cl,1);B(x0,y0,0,x1,y0+t,dp,cl,1);B(x0,y1-t,0,x1,y1,dp,cl,1);const n=Math.max(1,Math.round((y1-y0)/35));for(let j=1;j<n;j++){const yy=y0+j*(y1-y0)/n;B(x0+t,yy-.9,t,x1-t,yy+.9,dp-1,cl,1)}};
  const blind=(x0,y0,x1,y1,cl,z)=>{B(x0+gap,y0+gap,z,x1-gap,y1-gap,z+ft,cl,1);B(x0+gap,y0+gap,z+ft,x1-gap,y1-gap,z+ft+.1,'#000000',2,.18)};
- if(c.k=='buz'){B(0,0,0,w,h,d-3,'#C3C7CA',0);B(.3,.3,d-3,w-.3,h*.48-.3,d,'#CDD1D4',1);B(.3,h*.48+.3,d-3,w-.3,h-.3,d,'#CDD1D4',1);B(w-6,h*.3,d,w-4.4,h*.3+30,d+3,'#7c8083',2);B(w-6,h*.6,d,w-4.4,h*.6+30,d+3,'#7c8083',2);return}
- B(3,0,4,w-3,10,d-6,'#2a2d2c',0);
- const y0=10,y1=10+h;
+ if(c.k=='buz'){B(0,0,0,w,h,d-3,'#C3C7CA',0);B(.3,.3,d-3,w-.3,h*.48-.3,d,'#CDD1D4',1);B(.3,h*.48+.3,d-3,w-.3,h-.3,d,'#CDD1D4',1);B(w-6,h*.3,d,w-4.4,h*.3+30,d+3,'#7c8083',2);B(w-6,h*.6,d,w-4.4,h*.6+30,d+3,'#7c8083',2);const fh=FUH(c);if(fh>=15){const y=h+2,cl=c.ov.col||S.ct,s2=c.ov.style||S.sb;B(0,y,0,w,y+fh,d,cl,0);door(0,y,w,y+fh,cl,s2,'b',d);if(TAC())B(0,y+fh,0,w,y+fh+TAC(),d+ft,cl,0)}return}
+ B(3,0,4,w-3,BZH(),d-6,'#2a2d2c',0);
+ const y0=BZH(),y1=BZH()+h;
  if(alt){
   if(c.k=='raf')open(0,y0,w,y1,d,col);
   else{B(0,y0,0,w,y1,d,col,0);
@@ -406,14 +426,16 @@ function modParts(c,isl,B0,BU){let B=B0;
   const tp=y1+4;B(0,y1,0,w,tp,d+2,S.top,3);
   if(c.k=='evye'){B(w*.18,tp,d*.22,w*.82,tp+.3,d*.78,'#8f969b',4);B(w/2-1.2,tp,d*.1,w/2+1.2,tp+28,d*.16,'#C9CCCF',4);B(w/2-1,tp+25,d*.1,w/2+1,tp+28,d*.38,'#C9CCCF',4)}
   if(c.k=='ocak')B(w*.08,tp,d*.15,w*.92,tp+.6,d*.85,'#141516',4);
-  if(c.u&&!isl){B=BU;const u=c.uh,yb=210-u;
+  if(c.u&&!isl){B=BU;const UT=TOPC(),u=c.uh,yb=UT-u;
    if(S.led!==0&&c.k!='ocak')B(1.5,yb-.5,27,w-1.5,yb,30,'#FFE3B8',6);
-   if(c.k=='ocak'){B(3,yb,0,w-3,yb+10,52,'#9a9ca0',0);B(w*.33,yb+10,0,w*.67,250,30,'#8a8c90',0)}
-   else if(c.ut=='raf')open(0,yb,w,210,35,wc);
-   else{B(0,yb,0,w,210,35,wc,0);const z=35;
-    if(c.k=='kose'){const b=Math.min(30,w/2),Lf=c.cs=='l';door(Lf?b:0,yb,Lf?w:w-b,210,wc,su,'b',z);blind(Lf?0:w-b,yb,Lf?b:w,210,wc,z)}
-    else if(c.ut=='klapa')door(0,yb,w,210,wc,su,'b',z);else dd(0,yb,w,210,wc,su,'b',z)}}
+   if(c.k=='ocak'){B(3,yb,0,w-3,yb+10,52,'#9a9ca0',0);B(w*.33,yb+10,0,w*.67,HT(),30,'#8a8c90',0)}
+   else if(c.ut=='raf')open(0,yb,w,UT,35,wc);
+   else{B(0,yb,0,w,UT,35,wc,0);const z=35;
+    if(c.k=='kose'){const b=Math.min(30,w/2),Lf=c.cs=='l';door(Lf?b:0,yb,Lf?w:w-b,UT,wc,su,'b',z);blind(Lf?0:w-b,yb,Lf?b:w,UT,wc,z)}
+    else if(c.ut=='klapa')door(0,yb,w,UT,wc,su,'b',z);else dd(0,yb,w,UT,wc,su,'b',z)}
+   if(TAC()&&c.k!='ocak')B(0,UT,0,w,UT+TAC(),35+ft,wc,0)}
  }else{
+  if(TAC()&&TALL.includes(c.k))B(0,y1,0,w,y1+TAC(),d+ft,col,0);
   if(c.k=='rafb'){open(0,y0,w,y1,d,col);return}
   B(0,y0,0,w,y1,d,col,0);
   if(c.k=='firin'){const a=h-140;dd(0,y1-a,w,y1,col,st,'r');B(.5,y1-a-58,d-2,w-.5,y1-a,d+.5,'#202224',1);B(8,y1-a-48,d+.5,w-8,y1-a-14,d+.8,'#3a3e42',2);door(0,y0+41,w,y0+82,col,st,'t');door(0,y0,w,y0+41,col,st,'t')}
@@ -436,11 +458,11 @@ function v3Draw(cA,wA,hA,dA){
  const quad=(pts,n,col,al,st)=>{const c=[0,0,0];pts.forEach(p=>{c[0]+=p[0]/4;c[1]+=p[1]/4;c[2]+=p[2]/4});if(dot(n,sub(cam,c))<=0)return null;const q=pts.map(pr);if(q.some(v=>!v))return null;return{q,f:shade(col,n,al),s:st,d:Math.hypot(...sub(c,cam))}};
  const fill=(o,lw,sc2)=>{x.beginPath();o.q.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.fillStyle=o.f;x.fill();x.lineWidth=lw||.6;x.strokeStyle=sc2||'rgba(0,0,0,.18)';x.stroke()};
  // oda
- const T=sc.T,Z=sc.Zm,room=[];
+ const T=sc.T,Z=sc.Zm,room=[],RH=Math.max(260,HT()+25);
  room.push(quad([[-60,0,0],[T+60,0,0],[T+60,0,Z],[-60,0,Z]],[0,1,0],'#D9D6CF',1));
- room.push(quad([[sc.L?0:-60,0,0],[sc.L?0:-60,260,0],[sc.R?T:T+60,260,0],[sc.R?T:T+60,0,0]],[0,0,1],'#EEEDE8',1));
- if(sc.R)room.push(quad([[T,0,0],[T,0,Z],[T,260,Z],[T,260,0]],[-1,0,0],'#E6E5E0',1));
- if(sc.L)room.push(quad([[0,0,0],[0,260,0],[0,260,Z],[0,0,Z]],[1,0,0],'#E6E5E0',1));
+ room.push(quad([[sc.L?0:-60,0,0],[sc.L?0:-60,RH,0],[sc.R?T:T+60,RH,0],[sc.R?T:T+60,0,0]],[0,0,1],'#EEEDE8',1));
+ if(sc.R)room.push(quad([[T,0,0],[T,0,Z],[T,RH,Z],[T,RH,0]],[-1,0,0],'#E6E5E0',1));
+ if(sc.L)room.push(quad([[0,0,0],[0,RH,0],[0,RH,Z],[0,0,Z]],[1,0,0],'#E6E5E0',1));
  room.filter(Boolean).forEach(o=>fill(o,.8,'rgba(0,0,0,.12)'));
  // gruplar
  const boxF=(b)=>{const[x0,y0,z0,x1,y1,z1]=b;return[[[[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],[x1,y0,z1]],[1,0,0]],[[[x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0]],[-1,0,0]],[[[x0,y1,z0],[x0,y1,z1],[x1,y1,z1],[x1,y1,z0]],[0,1,0]],[[[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1]],[0,-1,0]],[[[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],[0,0,1]],[[[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],[x1,y0,z0]],[0,0,-1]]]};
@@ -621,9 +643,9 @@ function rtScene(W,H){
   add(it.b,c,m)}));
  const T=sc.T,Z=sc.Zm+150;
  add([-120,-4,-30,T+120,0,Z],'#C8AE8A',7);
- add([sc.L?-4:-120,0,-6,sc.R?T+4:T+120,270,0],'#EEEBE4',10);
- if(sc.R)add([T,0,-6,T+6,270,Z*.8],'#E9E6DF',10);
- if(sc.L)add([-6,0,-6,0,270,Z*.8],'#E9E6DF',10);
+ const RH=Math.max(270,HT()+35);add([sc.L?-4:-120,0,-6,sc.R?T+4:T+120,RH,0],'#EEEBE4',10);
+ if(sc.R)add([T,0,-6,T+6,RH,Z*.8],'#E9E6DF',10);
+ if(sc.L)add([-6,0,-6,0,RH,Z*.8],'#E9E6DF',10);
  const tg=[sc.T/2+CAM.pan,105,sc.Zm*.32],R0=Math.max(sc.T,sc.Zm,300)*1.35*CAM.dz,cp=Math.cos(CAM.pitch);
  const p=[tg[0]+R0*Math.sin(CAM.yaw)*cp,tg[1]+R0*Math.sin(CAM.pitch),tg[2]+R0*Math.cos(CAM.yaw)*cp];
  const nr=a=>{const l=Math.hypot(...a);return a.map(v=>v/l)},fw=nr([tg[0]-p[0],tg[1]-p[1],tg[2]-p[2]]),rt=nr([-fw[2],0,fw[0]]),up=[rt[1]*fw[2]-rt[2]*fw[1],rt[2]*fw[0]-rt[0]*fw[2],rt[0]*fw[1]-rt[1]*fw[0]];
@@ -690,6 +712,7 @@ const ofDef=()=>{S.firm=S.firm||{ad:'',tel:'',adr:'',mail:''};if(!S.firm.ad||S.f
 function qData(){const m=mtr(),P=S.pr||{},u2=S.unit=='m2',U=u2?'m²':'mtül',kdv=S.kdv==null?20:S.kdv,disc=S.disc||0,mont=S.mont||0,rows=[];
  [['alt','Alt dolap'],['ust','Üst dolap'],['boy','Boy dolap']].forEach(([c,n])=>Object.keys(m).filter(k=>k.startsWith(c+'|')).forEach(k=>{const s=k.split('|')[1],key=k+(u2?'|m2':''),q=u2?m[k].a:m[k].q/100,p=P[key]||0;rows.push([s=='acik'?`${n}, açık raf (kapaksız)`:`${n}, ${SN(s)} kapak`,q,U,p,q*p])}));
  if(m.tez)rows.push(['Tezgah',m.tez.q/100,'mtül',P.tez||0,m.tez.q/100*(P.tez||0)]);
+ if(m.tac)rows.push([`Taç (${TAC()} cm)`,m.tac.q/100,'mtül',P.tac||0,m.tac.q/100*(P.tac||0)]);
  if(m.dav)rows.push(['Davlumbaz',m.dav.q,'adet',P.dav||0,m.dav.q*(P.dav||0)]);
  ACC.forEach((n,i)=>{const a=S.acc[i];if(a&&a.on)rows.push([n,a.q,'adet',a.p,a.q*a.p])});
  let sxs=0;(S.sx||[]).forEach(x=>{sxs+=x.q*x.p;rows.push([`${x.n} (Starax ${x.k}${x.r?', '+x.r:''})`,x.q,'adet',x.p,x.q*x.p])});
@@ -698,7 +721,8 @@ function qData(){const m=mtr(),P=S.pr||{},u2=S.unit=='m2',U=u2?'m²':'mtül',kdv
  const ara=rows.reduce((a,r)=>a+r[4],0),isk=ara*disc/100,mat=ara-isk,kd=mat*kdv/100;return{rows,ara,disc,isk,mat,kdv,kd,top:mat+kd}}
 function mList(){const L=[];S.walls.forEach((W,wi)=>{W.cols.forEach(c=>{const k=K[c.k],alt=k.t=='alt',st=c.k=='raf'||c.k=='rafb'?'Açık raf':c.k=='buz'?'—':SN(c.ov.style||(alt?S.sa:S.sb)),cl=c.k=='buz'?'—':nm(COLORS,c.ov.col||(alt?S.cb:S.ct));
   L.push([wn(W,wi),k.n,`${c.w} × ${c.h} × ${c.d}`,st,cl]);
-  if(alt&&c.u&&W.type!='ada'){if(c.k=='ocak')L.push(['','   ↳ Davlumbaz',`${c.w} cm modül üstü`,'—','Paslanmaz']);else L.push(['',c.ut=='raf'?'   ↳ Üst açık raf':'   ↳ Üst dolap',`${c.w} × ${c.uh} × 35`,c.ut=='raf'?'Açık raf':SN(c.ov.style||S.su),nm(COLORS,c.ov.col||S.cw)])}});if(W.type!='ada')(W.up||[]).forEach(u=>{if(u.k=='bos')return;L.push([wn(W,wi),'Üst: '+KU[u.k].n,`${u.w} × ${u.h} × ${u.d}`,u.k=='uraf'?'Açık raf':u.k=='dav'?'—':SN(u.ov.style||S.su),u.k=='dav'?'Paslanmaz':nm(COLORS,u.ov.col||S.cw)])})});return L}
+  {const fh=FUH(c);if(fh>=15)L.push(['','   ↳ Buzdolabı üstü klapa dolap',`${c.w} × ${fh} × ${c.d}`,SN(c.ov.style||S.sb),nm(COLORS,c.ov.col||S.ct)])}
+  if(alt&&c.u&&W.type!='ada'){if(c.k=='ocak')L.push(['','   ↳ Davlumbaz',`${c.w} cm modül üstü`,'—','Paslanmaz']);else L.push(['',c.ut=='raf'?'   ↳ Üst açık raf':'   ↳ Üst dolap',`${c.w} × ${c.uh} × 35`,c.ut=='raf'?'Açık raf':SN(c.ov.style||S.su),nm(COLORS,c.ov.col||S.cw)])}});if(W.type!='ada')(W.up||[]).forEach(u=>{if(u.k=='bos')return;L.push([wn(W,wi),'Üst: '+KU[u.k].n,`${u.w} × ${u.h} × ${u.d}`,u.k=='uraf'?'Açık raf':u.k=='dav'?'—':SN(u.ov.style||S.su),u.k=='dav'?'Paslanmaz':nm(COLORS,u.ov.col||S.cw)])});tacSegs(W).forEach(t=>L.push([wn(W,wi),'Taç',`${t.L} × ${TAC()} cm`,t.st?SN(t.st):'—',nm(COLORS,t.col)]))});return L}
 const ofImg=src=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src});
 const svgFix=s=>s.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" ').replace(/var\(--wallbg\)/g,'#F1F2EE').replace(/var\(--mute\)/g,'#5E6862').replace(/var\(--ink\)/g,'#1D2421').replace(/var\(--acc\)/g,'#2C5C8F').replace(/opacity="\.55"/g,'opacity="1"');
 async function ofViews(){const sel=S.sel,w0=S.w,out=[];S.sel=-1;
@@ -788,7 +812,125 @@ function ofForm(){ofDef();const F=S.firm,O=S.of,i=(l,v,fn,t)=>`<label class="f">
  ${i('Teklif no',S.tno,"S.tno=this.value")}${i('Geçerlilik (gün)',O.gec,"S.of.gec=+this.value||15",'number')}${i('Teslim süresi',O.tes,"S.of.tes=this.value")}${i('Ödeme şartları',O.ode,"S.of.ode=this.value")}${i('Not',O.not,"S.of.not=this.value")}
  <button class="chip on" onclick="makeOffer(this)">${OFF?'Teklif dosyasını yeniden oluştur':'Teklif dosyasını oluştur'}</button><div id="ofp">${ofPrev()}</div>`}
 
-const P=[pMod,pLook,pAcc,pSum,pQuote];
+// ---- Malzeme ihtiyacı: kesim listesi, tabaka optimizasyonu, PVC bant ----
+const MATD={SW:280,SH:210,trim:1,kerf:.4,tg:18,tk:18,ta:8,tr:18,gc:'#ECEAE4',drw:'ahsap',baza:1,bf:10};
+const matS=()=>{S.mat=Object.assign({},MATD,S.mat||{});return S.mat};
+const CATN={govde:'Gövde',kapak:'Kapak',arkalik:'Arkalık',raf:'Raf'};
+let MATR=null,MATO={};
+function matParts(){const M=matS(),t=M.tg/10,P=[],glass=[];
+ const add=(cat,col,n,mod,L,W,bl,bw,rot,q)=>{if(L<=0||W<=0)return;P.push({cat,col,t:{govde:M.tg,kapak:M.tk,arkalik:M.ta,raf:M.tr}[cat],n,mod,L:+L.toFixed(1),W:+W.toFixed(1),bl:bl||0,bw:bw||0,rot:rot!==false&&!WD.has(col),q:q||1})};
+ const painted=st=>String(st||'').startsWith('lk');
+ const front=(mod,col,st,W,H,q,label)=>{const lk=LOOK(st)||st;if(lk=='cam'){glass.push({mod,W,H,q:q||1});return}
+  if(String(lk).startsWith('cam')){const f=7,pb=painted(st)?0:1;add('kapak',col,label+' cam çerçeve (dikey)',mod,H,f,2*pb,0,false,2*(q||1));add('kapak',col,label+' cam çerçeve (yatay)',mod,W-2*f,f,2*pb,0,false,2*(q||1));glass.push({mod,W:W-2*f,H:H-2*f,q:q||1,cam:1});return}
+  const b=painted(st)?0:2;add('kapak',col,label,mod,H,W,b,b,false,q)};
+ const box=(mod,col,w,H,D,rails,openC)=>{const gcol=openC||M.gc,b=1;
+  add('govde',gcol,'Yan',mod,H,D,b,0,true,2);
+  add('govde',gcol,'Alt tabla',mod,w-2*t,D,b,0,true,1);
+  if(rails)add('govde',gcol,'Üst kuşak',mod,w-2*t,10,1,0,true,2);else add('govde',gcol,'Üst tabla',mod,w-2*t,D,b,0,true,1);
+  add('arkalik',openC||M.gc,'Arkalık',mod,H-.4,w-.4,0,0,true,1)};
+ const shelves=(mod,col,w,D,n,open)=>{if(n>0)add('raf',open?col:M.gc,'Raf',mod,w-2*t-.2,D-2,1,0,true,n)};
+ const drawers=(mod,col,w,D,hs)=>{hs.forEach(fh=>{const bh=Math.max(8,fh-6),Dd=Math.max(25,Math.floor((D-8)/5)*5),iw=w-2*t-2.6;
+  if(M.drw=='ahsap'){add('govde',M.gc,'Çekmece yanı',mod,Dd,bh,1,0,true,2);add('govde',M.gc,'Çekmece ön/arka iç',mod,iw-2*t,bh-1,1,0,true,2);add('arkalik',M.gc,'Çekmece tabanı',mod,iw,Dd,0,0,true,1)}
+  else{add('govde',M.gc,'Çekmece arkası',mod,iw-1,bh-4,1,0,true,1);add('arkalik',M.gc,'Çekmece tabanı',mod,iw-1,Dd-1,0,0,true,1)}})};
+ const fr=(n,tw,H)=>({n,W:tw/n-.3,H:H-.3});
+ S.walls.forEach((Wl,wi)=>{const wn0=wn(Wl,wi);let bz=0;
+  Wl.cols.forEach((c,i)=>{const k=K[c.k],w=c.w,h=c.h,D=c.d-2,mod=`${wn0} · ${i+1}. ${k.n} ${w}`,alt=k.t=='alt',col=c.ov.col||(alt?S.cb:S.ct),st=c.ov.style||(alt?S.sa:S.sb);
+   if(c.k=='buz'){const fh=FUH(c);if(fh>=15){const m2=`${wn0} · ${i+1}. Buzdolabı üstü klapa ${w}`;box(m2,col,w,fh,D,false);front(m2,col,st,w-.3,fh-.3,1,'Klapa kapak')}return}bz+=w;
+   if(alt){
+    if(c.k=='raf'){box(mod,col,w,h,D,false,col);shelves(mod,col,w,D,Math.max(1,Math.round(h/35)-1),true);return}
+    box(mod,col,w,h,D,true);
+    if(c.k=='kapak'||c.k=='kose')shelves(mod,col,w,D,1);
+    if(c.k=='kapak'||c.k=='evye'){const n=w>=70?2:1,f=fr(n,w,h);front(mod,col,st,f.W,f.H,n,'Kapak')}
+    else if(c.k=='cekmece'){front(mod,col,st,w-.3,h/3-.3,3,'Çekmece önü');drawers(mod,col,w,D,[h/3,h/3,h/3])}
+    else if(c.k=='ocak'){front(mod,col,st,w-.3,21.7,1,'Çekmece önü');front(mod,col,st,w-.3,h-22.3,1,'Kapak');drawers(mod,col,w,D,[22])}
+    else if(c.k=='kose'){const b=Math.min(30,w/2);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
+   }else{
+    if(c.k=='rafb'){box(mod,col,w,h,D,false,col);shelves(mod,col,w,D,Math.max(1,Math.round(h/35)-1),true);return}
+    box(mod,col,w,h,D,false);
+    if(c.k=='firin'){add('raf',M.gc,'Fırın rafı (sabit)',mod,w-2*t,D,1,0,true,2);shelves(mod,col,w,D,1);const a=h-140;front(mod,col,st,(w>=70?w/2:w)-.3,a-.3,w>=70?2:1,'Kapak');front(mod,col,st,w-.3,40.7,2,'Çekmece önü');drawers(mod,col,w,D,[41,41])}
+    else{shelves(mod,col,w,D,Math.max(1,Math.round(h/45)-1));
+     if(c.k=='kosb'){const b=Math.min(30,w/2);front(mod,col,st,w-b-.3,h/2-.3,2,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
+     else{const n=w>=70?2:1;front(mod,col,st,w/n-.3,h/2-.3,2*n,'Kapak')}}}
+  });
+  if(M.baza&&bz>0){let r=bz;while(r>0){const L=Math.min(r,M.SW-2*M.trim);add('kapak',S.cb,'Baza',`${wn0} · baza`,L,BZH(),1,0,false,1);r-=L}}
+  if(Wl.type=='ada')return;
+  tacSegs(Wl).forEach(tg=>{const b=painted(tg.st)?0:1;let r=tg.L;while(r>0){const L=Math.min(r,M.SW-2*M.trim);add('kapak',tg.col,'Taç',`${wn0} · taç`,L,TAC(),b,0,false,1);r-=L}});
+  (Wl.up||[]).forEach((u,i)=>{if(u.k=='bos'||u.k=='dav')return;const w=u.w,h=u.h,D=u.d-2,mod=`${wn0} · üst ${i+1}. ${KU[u.k].n} ${w}`,col=u.ov.col||S.cw,st=u.ov.style||S.su;
+   if(u.k=='uraf'){box(mod,col,w,h,D,false,col);shelves(mod,col,w,D,Math.max(1,Math.round(h/35)-1),true);return}
+   box(mod,col,w,h,D,false);if(h>=50)shelves(mod,col,w,D,1);
+   if(u.k=='klapa')front(mod,col,st,w-.3,h-.3,1,'Klapa kapak');
+   else if(u.k=='ukose'){const b=Math.min(30,w/2);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
+   else{const n=w>=70?2:1;front(mod,col,st,w/n-.3,h-.3,n,'Kapak')}});
+ });
+ return{P,glass}}
+// MaxRects (en kısa kenar uyumu) yerleşimi
+function maxrects(items,SW,SH,kerf){const sheets=[],over=[];
+ const fits=(f,w,h)=>w<=f.w+1e-6&&h<=f.h+1e-6;
+ const place=(s,x,y,w,h)=>{const nf=[];s.free.forEach(f=>{if(x>=f.x+f.w||x+w<=f.x||y>=f.y+f.h||y+h<=f.y){nf.push(f);return}
+   if(x>f.x)nf.push({x:f.x,y:f.y,w:x-f.x,h:f.h});if(x+w<f.x+f.w)nf.push({x:x+w,y:f.y,w:f.x+f.w-x-w,h:f.h});
+   if(y>f.y)nf.push({x:f.x,y:f.y,w:f.w,h:y-f.y});if(y+h<f.y+f.h)nf.push({x:f.x,y:y+h,w:f.w,h:f.y+f.h-y-h})});
+  s.free=nf.filter((a,i)=>!nf.some((b,j)=>j!==i&&a.x>=b.x&&a.y>=b.y&&a.x+a.w<=b.x+b.w&&a.y+a.h<=b.y+b.h&&(j<i||a.x!=b.x||a.y!=b.y||a.w!=b.w||a.h!=b.h)))};
+ items.sort((a,b)=>Math.max(b.L,b.W)-Math.max(a.L,a.W)||b.L*b.W-a.L*a.W);
+ for(const it of items){let best=null;
+  const opts=[[it.L,it.W,0]];if(it.rot)opts.push([it.W,it.L,1]);
+  sheets.forEach((s,si)=>s.free.forEach(f=>opts.forEach(([pw,ph,r])=>{const w=pw+kerf,h=ph+kerf;if(fits(f,w,h)){const sc=Math.min(f.w-w,f.h-h),sc2=Math.max(f.w-w,f.h-h);if(!best||sc<best.sc||(sc==best.sc&&sc2<best.sc2))best={si,x:f.x,y:f.y,w,h,r,sc,sc2}}})));
+  if(!best){const s={free:[{x:0,y:0,w:SW+kerf,h:SH+kerf}],parts:[]};let ok=null;
+   for(const [pw,ph,r] of opts){const w=pw+kerf,h=ph+kerf;if(fits(s.free[0],w,h)){ok={x:0,y:0,w,h,r};break}}
+   if(!ok){over.push(it);continue}sheets.push(s);best={si:sheets.length-1,...ok}}
+  const s=sheets[best.si];place(s,best.x,best.y,best.w,best.h);s.parts.push({...it,x:best.x,y:best.y,w:best.w-kerf,h:best.h-kerf,r:best.r})}
+ return{sheets,over}}
+function matCalc(){const M=matS(),{P,glass}=matParts(),SW=M.SW-2*M.trim,SH=M.SH-2*M.trim,kerf=M.kerf/10,sheetA=M.SW*M.SH/1e4;
+ const expand=list=>{const o=[];list.forEach(p=>{for(let i=0;i<p.q;i++)o.push({...p,q:1})});return o};
+ const grp=(keyf)=>{const g={};P.forEach(p=>{const k=keyf(p);(g[k]=g[k]||[]).push(p)});return g};
+ const byCat={},cats=['govde','kapak','arkalik','raf'];
+ cats.forEach(c=>{const ps=P.filter(p=>p.cat==c),cols={};ps.forEach(p=>{const k=p.col+'|'+p.t;(cols[k]=cols[k]||[]).push(p)});
+  let n=0,a=0,sh=0;const det=Object.entries(cols).map(([k,l])=>{const [col,th]=k.split('|'),r=maxrects(expand(l),SW,SH,kerf),ar=l.reduce((s,p)=>s+p.L*p.W*p.q,0)/1e4,cnt=l.reduce((s,p)=>s+p.q,0);n+=cnt;a+=ar;sh+=r.sheets.length;return{col,th:+th,cnt,ar,sheets:r.sheets.length}});
+  byCat[c]={n,a,sh,det}});
+ const mats=grp(p=>p.col+'|'+p.t),order=[];
+ Object.entries(mats).forEach(([k,l])=>{const [col,th]=k.split('|'),r=maxrects(expand(l),SW,SH,kerf),ar=l.reduce((s,p)=>s+p.L*p.W*p.q,0)/1e4;
+  order.push({col,th:+th,cats:[...new Set(l.map(p=>CATN[p.cat]))].join(', '),cnt:l.reduce((s,p)=>s+p.q,0),ar,sheets:r.sheets,over:r.over,fire:r.sheets.length?1-ar/(r.sheets.length*sheetA):0})});
+ order.sort((a,b)=>b.th-a.th||b.ar-a.ar);
+ const band={};P.forEach(p=>{const len=(p.bl*p.L+p.bw*p.W)*p.q;if(!len)return;const ty=p.cat=='kapak'?'k':'g',k=ty+'|'+p.col;band[k]=(band[k]||0)+len});
+ const bands=Object.entries(band).map(([k,len])=>{const [ty,col]=k.split('|');return{ty,col,m:len/100,mf:len/100*(1+M.bf/100)}}).sort((a,b)=>a.ty.localeCompare(b.ty)||b.m-a.m);
+ const painted=P.some(p=>p.cat=='kapak'&&p.n!='Baza'&&p.bl==0&&p.bw==0);
+ MATR={P,glass,byCat,order,bands,sheetA,painted};return MATR}
+const cn=h=>h==matS().gc&&!COLORS.some(c=>c[1]==h)?'Gövde rengi':nm(COLORS,h);
+const f2=n=>(+n).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function sheetSVG(s,M,idx){const SW=M.SW,SH=M.SH,tr=M.trim,sc=1;let o=`<svg viewBox="-2 -2 ${SW+4} ${SH+4}" role="img" aria-label="Tabaka ${idx} kesim planı" style="width:100%;display:block;background:var(--panel);border-radius:4px"><rect x="0" y="0" width="${SW}" height="${SH}" fill="#f1efe8" stroke="#8a8f93" stroke-width=".6"/>`;
+ const pal=['#cfe0ec','#e5d6c1','#d6e5cf','#e9d3d8','#dcd6ea','#efe5bf'],ci={govde:0,kapak:1,arkalik:2,raf:3};
+ s.parts.forEach(p=>{const x=tr+p.x,y=tr+p.y,w=p.w,h=p.h;o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${pal[ci[p.cat]]}" stroke="#4b5257" stroke-width=".35"/>`;
+  const lab=p.n,dim=`${Math.round(p.r?p.W*10:p.L*10)}×${Math.round(p.r?p.L*10:p.W*10)}`,vert=h>w*1.3,span=vert?h:w,thick=vert?w:h,chars=Math.max(lab.length,dim.length);
+  let f=Math.min(6,(span-2)/(chars*.56),(thick-1)/2.3);if(f>=2){const cx=x+w/2,cy=y+h/2,tr=vert?` transform="rotate(-90 ${cx} ${cy})"`:'';o+=`<g${tr}><text x="${cx}" y="${cy-f*.15}" text-anchor="middle" font-size="${f}" fill="#22272b">${esc(lab)}</text><text x="${cx}" y="${cy+f*.95}" text-anchor="middle" font-size="${f*.85}" fill="#4b5257">${dim}</text></g>`}});
+ return o+`</svg>`}
+function matCSV(){const R=MATR||matCalc(),rows=[['Kategori','Renk','Kalınlık (mm)','Parça','Modül','Boy (mm)','En (mm)','Adet','Damar yönünde','Bant boy kenar','Bant en kenar']];
+ R.P.forEach(p=>rows.push([CATN[p.cat],cn(p.col),p.t,p.n,p.mod,Math.round(p.L*10),Math.round(p.W*10),p.q,p.rot?'Hayır':'Evet',p.bl,p.bw]));
+ return '﻿'+rows.map(r=>r.map(v=>{v=String(v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(';')).join('\r\n')}
+async function matSaveCSV(){const st=$('#mts');try{await saveFile(`kesim-listesi-${(S.cust||S.proj||'mutfak').replace(/[^\wçğıöşüÇĞİÖŞÜ-]+/g,'-')}.csv`,new Blob([matCSV()],{type:'text/csv'}));if(st)st.textContent='Kesim listesi kaydedildi.'}catch(e){if(st)st.textContent=saveErr(e,'Bu görünümde dosya kaydı kullanılamıyor. "Listeyi kopyala" ile kopyalayabilirsin.')}}
+function matSet(k,v){const M=matS();M[k]=v;MATR=null;R()}
+function pMat(){const M=matS(),R0=matCalc(),inp=(l,k,v,st)=>`<label class="f">${l}<input type="number" inputmode="decimal" step="${st||'any'}" value="${v}" onchange="matSet('${k}',Math.max(0,+this.value||0))"></label>`;
+ const tot=R0.order.reduce((a,o)=>a+o.sheets.length,0);
+ let h=`<p class="note">Malzeme listesi çizimdeki modüllerden otomatik çıkar. Parçalar tabakaya en az fireyle yerleştirilir (aynı renk ve kalınlık birlikte kesilir, ahşap desenlerde damar yönü korunur).</p>`;
+ h+=`<div class="qr"><div class="qh"><b>Toplam tabaka</b><span>${M.SW}×${M.SH} cm</span></div><div class="tot" style="margin:4px 0">${tot} tabaka</div><p class="mu" style="margin:0">${R0.P.reduce((a,p)=>a+p.q,0)} parça · ${f2(R0.P.reduce((a,p)=>a+p.L*p.W*p.q,0)/1e4)} m² net</p></div>`;
+ h+=`<h3 class="sec">Kategoriye göre</h3><div style="overflow-x:auto"><table class="mt"><thead><tr><th>Kategori</th><th>Renk · kalınlık</th><th>Parça</th><th>m²</th><th>Tabaka*</th></tr></thead><tbody>`;
+ ['govde','kapak','arkalik','raf'].forEach(c=>{const b=R0.byCat[c];if(!b.n){h+=`<tr><td><b>${CATN[c]}</b></td><td class="mu">—</td><td>0</td><td>0</td><td>0</td></tr>`;return}
+  b.det.forEach((d,i)=>{h+=`<tr><td>${i?'':`<b>${CATN[c]}</b>`}</td><td>${cn(d.col)} · ${d.th} mm</td><td>${d.cnt}</td><td>${f2(d.ar)}</td><td>${d.sheets}</td></tr>`})});
+ h+=`</tbody></table></div><p class="note">* Kategori ayrı kesilirse gereken tabaka. Gövde ve raf aynı malzemeyse birlikte kesildiğinde daha az tabaka gerekir, sipariş için aşağıdaki tabloyu kullan.</p>`;
+ h+=`<h3 class="sec">Sipariş edilecek tabaka</h3><div style="overflow-x:auto"><table class="mt"><thead><tr><th>Malzeme</th><th>Kullanım</th><th>Parça</th><th>m²</th><th>Tabaka</th><th>Fire</th></tr></thead><tbody>`+R0.order.map(o=>`<tr><td><b>${cn(o.col)}</b><br><span class="mu">${o.th} mm MDF</span></td><td>${o.cats}</td><td>${o.cnt}</td><td>${f2(o.ar)}</td><td><b>${o.sheets.length}</b></td><td>%${Math.round(o.fire*100)}</td></tr>`).join('')+`</tbody></table></div>`;
+ if(R0.order.some(o=>o.over.length))h+=`<p class="note bad">Tabakaya sığmayan parça var: ${R0.order.flatMap(o=>o.over).map(p=>`${p.n} ${Math.round(p.L*10)}×${Math.round(p.W*10)} mm`).join(', ')}. Tabaka ölçüsünü veya modülü kontrol et.</p>`;
+ h+=`<h3 class="sec">PVC kenar bandı</h3><div style="overflow-x:auto"><table class="mt"><thead><tr><th>Bant</th><th>Renk</th><th>Net</th><th>Fireli (+%${M.bf})</th></tr></thead><tbody>`+(R0.bands.length?R0.bands.map(b=>`<tr><td>${b.ty=='k'?'Kapak bandı 1–2 mm':'Gövde bandı 0,8 mm'}</td><td>${cn(b.col)}</td><td>${f2(b.m)} m</td><td><b>${f2(b.mf)} m</b></td></tr>`).join(''):`<tr><td colspan="4" class="mu">Bantlanacak kenar yok.</td></tr>`)+`</tbody></table></div>`;
+ if(R0.painted)h+=`<p class="note">Lake Kapak modelleri boyalı kenarlı üretildiği için kapak bandı hesabına katılmadı.</p>`;
+ if(R0.glass.length)h+=`<p class="note">Cam: ${R0.glass.reduce((a,g)=>a+g.q,0)} adet, toplam ${f2(R0.glass.reduce((a,g)=>a+g.W*g.H*g.q,0)/1e4)} m²${R0.glass.some(g=>!g.cam)?' (alüminyum çerçeveli kapaklar MDF hesabına girmez)':''}.</p>`;
+ h+=`<div class="row" style="margin-top:8px"><button class="chip on" onclick="matSaveCSV()">Kesim listesini kaydet (CSV)</button><button class="chip" onclick="MATO.list=!MATO.list;R()">${MATO.list?'Parça listesini gizle':'Parça listesini göster'}</button></div><p class="note" id="mts"></p>`;
+ if(MATO.list)h+=`<div style="overflow-x:auto;max-height:420px;overflow-y:auto;border:1px solid var(--line);border-radius:6px"><table class="mt"><thead><tr><th>Parça</th><th>Ölçü (mm)</th><th>Adet</th><th>Malzeme</th><th>Bant</th><th>Modül</th></tr></thead><tbody>`+R0.P.map(p=>`<tr><td>${CATN[p.cat]} · ${esc(p.n)}</td><td>${Math.round(p.L*10)}×${Math.round(p.W*10)}</td><td>${p.q}</td><td>${cn(p.col)} ${p.t}</td><td>${p.bl||p.bw?`${p.bl}U ${p.bw}K`:'—'}</td><td class="mu">${esc(p.mod)}</td></tr>`).join('')+`</tbody></table></div><p class="note">Bant: U = uzun (boy) kenar, K = kısa (en) kenar sayısı.</p>`;
+ h+=`<h3 class="sec">Kesim planı</h3>`+R0.order.map((o,oi)=>{const op=MATO['p'+oi];return `<div class="qr"><button class="sxh" aria-expanded="${!!op}" onclick="MATO['p${oi}']=!MATO['p${oi}'];R()"><b>${cn(o.col)} · ${o.th} mm</b><span>${o.sheets.length} tabaka · fire %${Math.round(o.fire*100)} · ${op?'kapat':'aç'}</span></button>${op?o.sheets.map((s,si)=>`<p class="lb">Tabaka ${si+1} / ${o.sheets.length} · ${s.parts.length} parça</p>${sheetSVG(s,M,si+1)}`).join(''):''}</div>`}).join('')+`<p class="note">Renkler: mavi gövde, bej kapak, yeşil arkalık, pembe raf. Ölçüler mm.</p>`;
+ h+=`<h3 class="sec">Hesap ayarları</h3><div class="g3">${inp('Tabaka boyu (cm)','SW',M.SW)}${inp('Tabaka eni (cm)','SH',M.SH)}${inp('Kenar payı (cm)','trim',M.trim)}${inp('Testere payı (mm)','kerf',M.kerf*10).replace("matSet('kerf',Math.max(0,+this.value||0))","matSet('kerf',Math.max(0,+this.value||0)/10)")}${inp('Gövde kalınlığı (mm)','tg',M.tg)}${inp('Kapak kalınlığı (mm)','tk',M.tk)}${inp('Arkalık kalınlığı (mm)','ta',M.ta)}${inp('Raf kalınlığı (mm)','tr',M.tr)}${inp('Bant firesi (%)','bf',M.bf)}<label class="f">Baza yüksekliği (cm)<input type="number" inputmode="decimal" step="any" value="${BZH()}" onchange="setHt('bz',this.value)"></label></div>
+  <p class="lb">Gövde rengi: <b>${cn(M.gc)}</b></p><div class="row">${sw(COLORS,M.gc,"matSet('gc',")}</div>
+  <p class="lb">Çekmece kutusu</p><div class="row">${[['ahsap','MDF (ahşap) kutu'],['metal','Metal yanaklı hazır sistem']].map(([a,b])=>`<button class="chip ${M.drw==a?'on':''}" onclick="matSet('drw','${a}')">${b}</button>`).join('')}</div>
+  <label class="chk"><input type="checkbox" ${M.baza?'checked':''} onchange="matSet('baza',this.checked?1:0)"> Baza MDF'den (alt dolap renginde, ${BZH()} cm)</label>
+  <p class="note">Varsayımlar: gövde derinliği modül derinliğinden 2 cm az, alt dolaplarda üst tabla yerine 2 adet 10 cm kuşak, arkalık gövde renginde, kapak aralıkları 3 mm. Açık raflı modüllerin gövdesi ve rafları ön renginde hesaplanır. Baza kapak grubunda sayılır. Buzdolabı nişi ve tezgah hesaba girmez.</p>`;
+ return h}
+
+const P=[pMod,pLook,pAcc,pSum,pQuote,pMat];
 function R(){fixC();drawSVG();draw3D();drawPlan();$('#tabs').innerHTML=TABS.map((t,i)=>`<button class="${i==S.tab?'on':''}" onclick="S.tab=${i};R()">${t}</button>`).join('');$('#pane').innerHTML=P[S.tab]();save()}
 if(S.w>=S.walls.length)S.w=0;
 R();try{$('#ver').textContent='EB Design · Sürüm '+APP_VER}catch(e){}
