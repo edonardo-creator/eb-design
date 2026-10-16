@@ -92,7 +92,7 @@ function tacSegs(W){const o=[];if(!TAC()||W.type=='ada')return o;const ad=(col,s
  (W.up||[]).forEach(u=>{if(u.k!='bos'&&u.k!='dav')ad(u.ov.col||S.cw,u.k=='uraf'?'':(u.ov.style||S.su),u.w,KU[u.k].n)});return o}
 function setHt(f,v){const o=FIT();if(f=='H')S.H=Math.min(260,Math.max(200,+v||230));else if(f=='tac')S.tac=Math.min(20,Math.max(0,v===''?8:+v||0));else S.bz=Math.min(30,Math.max(5,+v||15));const n=FIT();
  S.walls.forEach(W=>W.cols.forEach(c=>{if(TALL.includes(c.k)&&c.h==o)c.h=n}));MATR=null;R()}
-const APP_VER='2026.10.17-0046';
+const APP_VER='2026.10.17-0054';
 const K={kapak:{n:'Kapaklı alt',t:'alt',w:60},cekmece:{n:'Çekmeceli alt',t:'alt',w:60},evye:{n:'Evye altı',t:'alt',w:80},ocak:{n:'Ocak altı',t:'alt',w:60},kose:{n:'Köşe alt dolap',t:'alt',w:90},boy:{n:'Boy dolap',t:'boy',w:60},firin:{n:'Fırınlı boy',t:'boy',w:60},buz:{n:'Buzdolabı',t:'boy',w:70},kosb:{n:'Köşe boy dolap',t:'boy',w:60},raf:{n:'Açık raflı alt',t:'alt',w:60},rafb:{n:'Açık raflı boy',t:'boy',w:60}};
 const KU={ust:{n:'Kapaklı üst',w:60},klapa:{n:'Klapa kapaklı üst',w:80},uraf:{n:'Açık raflı üst',w:60},ukose:{n:'Köşe üst dolap',w:90},dav:{n:'Davlumbaz',w:60},bos:{n:'Boşluk',w:60}};
 const KA=k=>K[k]||KU[k];
@@ -927,7 +927,7 @@ function pMat(){const M=matS(),R0=matCalc(),inp=(l,k,v,st)=>`<label class="f">${
   <p class="lb">Gövde rengi: <b>${cn(M.gc)}</b></p><div class="row">${sw(COLORS,M.gc,"matSet('gc',")}</div>
   <p class="lb">Çekmece kutusu</p><div class="row">${[['ahsap','MDF (ahşap) kutu'],['metal','Metal yanaklı hazır sistem']].map(([a,b])=>`<button class="chip ${M.drw==a?'on':''}" onclick="matSet('drw','${a}')">${b}</button>`).join('')}</div>
   <label class="chk"><input type="checkbox" ${M.baza?'checked':''} onchange="matSet('baza',this.checked?1:0)"> Baza MDF'den (alt dolap renginde, ${BZH()} cm)</label>
-  <p class="note">Varsayımlar: gövde derinliği modül derinliğinden 2 cm az, alt dolaplarda üst tabla yerine 2 adet 10 cm kuşak, arkalık gövde renginde, kapak aralıkları 3 mm. Açık raflı modüllerin gövdesi ve rafları ön renginde hesaplanır. Baza kapak grubunda sayılır. Buzdolabı nişi ve tezgah hesaba girmez.</p>`;
+  <p class="note">Varsayımlar: gövde derinliği modül derinliğinden 2 cm az, alt dolaplarda üst tabla yerine 2 adet 10 cm kuşak, arkalık gövde renginde, kapak aralıkları 3 mm. Açık raflı modüllerin gövdesi ve rafları ön renginde hesaplanır. Baza ve taç kapak grubunda sayılır. Buzdolabı üstü klapa dolap hesaba dahildir, buzdolabının kendisi ve tezgah girmez.</p>`;
  return h}
 
 const P=[pMod,pLook,pAcc,pSum,pQuote,pMat];
