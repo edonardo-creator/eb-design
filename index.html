@@ -198,6 +198,7 @@ function tacSegs(W){if(!TAC()||W.type=='ada')return[];const wi=S.walls.indexOf(W
  iv.sort((a,b)=>a[0]-b[0]);const R0=[];iv.forEach(([a,b])=>{const l=R0[R0.length-1];if(l&&a<=l[1]+.5)l[1]=Math.max(l[1],b);else R0.push([a,b])});
  const[col,st]=tacCol();return R0.map(([a,b])=>({x0:a,x1:b,L:+(b-a).toFixed(1),col,st,n:[]}))}
 const tc=n=>String(n).replace('.',','),PT=1.8,HYN={l:'sol',r:'sağ',b:'arka'};
+const KBL=w=>Math.min(65,Math.max(0,w-20)),KBU=w=>Math.min(45,Math.max(0,w-20));
 function hyCalc(){const gc=matS().gc,A=S.walls,dv=A.filter(a=>a.type=='duvar'),out=[],AU={},POS={},END={};
  A.forEach((W,wi)=>{const t=W.type=='ada'?3:dv.indexOf(W),cL=t==1||t==2||(t==0&&dv.length>2),cR=t==0&&dv.length>1;
   const sides=(r,i,c,auto,col,st,H,D,nm)=>{AU[`${wi}|${r}|${i}`]=auto;const sd=c.hy==null?auto:c.hy=='yok'?'':c.hy;[...sd].forEach(sx=>out.push({wi,r,i,s:sx,col,st,H,D,nm,alt:r=='a'&&K[c.k].t=='alt'}));return sd};
@@ -222,8 +223,8 @@ function hyCalc(){const gc=matS().gc,A=S.walls,dv=A.filter(a=>a.type=='duvar'),o
 function hyMap(L){L=L||hyCalc();const M={};L.forEach(h=>{const k=`${h.wi}|${h.r}|${h.i}`;const e=(M[k]=M[k]||{s:'',col:h.col,in:''});e.s+=h.s;if(h.in)e.in+=h.s});M.POS=L.POS;M.END=L.END;return M}
 function setHt(f,v){const o=FIT();if(f=='H')S.H=Math.min(260,Math.max(200,+v||232));else if(f=='tac')S.tac=Math.min(20,Math.max(0,v===''?5:+v||0));else S.bz=Math.min(30,Math.max(5,+v||15));const n=FIT();
  S.walls.forEach(W=>W.cols.forEach(c=>{if(TALL.includes(c.k)&&c.h==o)c.h=n}));MATR=null;R()}
-const APP_VER='2026.10.17-2225';
-const K={kapak:{n:'Kapaklı alt',t:'alt',w:60},cekmece:{n:'Çekmeceli alt',t:'alt',w:60},evye:{n:'Evye altı',t:'alt',w:80},ocak:{n:'Ocak altı',t:'alt',w:60},kose:{n:'Köşe alt dolap',t:'alt',w:90},boy:{n:'Boy dolap',t:'boy',w:60},firin:{n:'Fırınlı boy',t:'boy',w:60},firinalt:{n:'Fırın modülü',t:'alt',w:60},bulasik:{n:'Bulaşık makinesi',t:'alt',w:60},sutun:{n:'Sütun (alt)',t:'alt',w:8},sutunb:{n:'Sütun (boy)',t:'boy',w:8},buz:{n:'Buzdolabı',t:'boy',w:70},buzb:{n:'Buzdolabı boy modülü',t:'boy',w:76},kosb:{n:'Köşe boy dolap',t:'boy',w:60},raf:{n:'Açık raflı alt',t:'alt',w:60},rafb:{n:'Açık raflı boy',t:'boy',w:60}};
+const APP_VER='2026.10.18-0030';
+const K={kapak:{n:'Kapaklı alt',t:'alt',w:60},cekmece:{n:'Çekmeceli alt',t:'alt',w:60},evye:{n:'Evye altı',t:'alt',w:80},ocak:{n:'Ocak altı',t:'alt',w:60},kose:{n:'Köşe alt dolap (kör köşe)',t:'alt',w:110},boy:{n:'Boy dolap',t:'boy',w:60},firin:{n:'Fırınlı boy',t:'boy',w:60},firinalt:{n:'Fırın modülü',t:'alt',w:60},bulasik:{n:'Bulaşık makinesi',t:'alt',w:60},sutun:{n:'Sütun (alt)',t:'alt',w:8},sutunb:{n:'Sütun (boy)',t:'boy',w:8},buz:{n:'Buzdolabı',t:'boy',w:70},buzb:{n:'Buzdolabı boy modülü',t:'boy',w:76},kosb:{n:'Köşe boy dolap',t:'boy',w:60},raf:{n:'Açık raflı alt',t:'alt',w:60},rafb:{n:'Açık raflı boy',t:'boy',w:60}};
 const KU={ust:{n:'Kapaklı üst',w:60},klapa:{n:'Klapa kapaklı üst',w:80},uraf:{n:'Açık raflı üst',w:60},ukose:{n:'Köşe üst dolap',w:90},dav:{n:'Davlumbaz',w:60},usutun:{n:'Sütun (üst)',w:8},bos:{n:'Boşluk',w:60}};
 const KA=k=>K[k]||KU[k];
 const mku=(k,w,h)=>({k,w:w||KU[k].w,h:h||(k=='klapa'?40:80),d:k=='dav'?50:35,ov:{},cs:'r'});
@@ -286,12 +287,12 @@ function sxSel(){const L=S.sx||[];if(!L.length)return '<p class="note">Henüz ü
  return L.map((x,i)=>`<div class="qr"><div class="qh"><b>${esc(x.n)}</b><button class="chip" onclick="S.sx.splice(${i},1);R()">Sil</button></div><p class="mu" style="margin:2px 0 0">Kod ${x.k}${x.r?' · '+x.r:''} · liste fiyatı ${fm(x.lp)} TL</p><div class="g3">${x.rs.length>1?`<label class="f">Renk<select onchange="S.sx[${i}].r=this.value;R()">${x.rs.map(c=>`<option ${c==x.r?'selected':''}>${c}</option>`).join('')}</select></label>`:''}<label class="f">Adet<input type="number" inputmode="numeric" min="1" value="${x.q}" onchange="S.sx[${i}].q=Math.max(1,+this.value||1);R()"></label><label class="f">Birim (TL)<input type="number" inputmode="decimal" step="any" min="0" value="${x.p}" onchange="S.sx[${i}].p=Math.max(0,+this.value||0);R()"></label></div><div class="qt">${fm(x.q*x.p)} TL</div></div>`).join('')+`<label class="f">Starax iskontosu (%)<input type="number" inputmode="decimal" step="any" min="0" max="100" value="${S.sxd||0}" onchange="S.sxd=Math.min(100,Math.max(0,+this.value||0));R()"></label><div class="tot">Starax toplamı: ${fm(sxTot())} TL</div>`}
 const TABS=['Modüller','Kapak ve renk','Aksesuar','Özet','Teklif','Malzeme'];
 const DH={sutun:72,sutunb:212,bulasik:72,firinalt:72,kapak:72,cekmece:72,evye:72,ocak:72,kose:72,boy:212,firin:212,buz:180,buzb:180,kosb:212,raf:72,rafb:212};
-const mk=(k,w,u)=>({k,w:w||K[k].w,u:0,ov:{},h:(TALL.includes(k)||k=='sutunb')?FIT():DH[k],uh:80,fu:1,cs:'r',sh:'L',d:k=='kose'?90:60});
+const mk=(k,w,u)=>({k,w:w||K[k].w,u:0,ov:{},h:(TALL.includes(k)||k=='sutunb')?FIT():DH[k],uh:80,fu:1,cs:'r',sh:'L',d:60});
 const bl=(x,y,w,h,col)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}" stroke="rgba(0,0,0,.35)" stroke-width=".6"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#000" fill-opacity=".18"/>`;
 function migU(W){if(W.type=='ada'){W.up=[];W.cols.forEach(c=>c.u=0);return}if(W.up)return;W.up=[];
  W.cols.forEach(c=>{const k=K[c.k];if(k.t=='alt'&&c.u){const u=c.k=='ocak'?mku('dav',c.w,c.uh):c.ut=='raf'?mku('uraf',c.w,c.uh):c.k=='kose'?Object.assign(mku('ukose',c.w,c.uh),{cs:c.cs}):mku('ust',c.w,c.uh);if(c.k!='ocak')u.ov={...c.ov};W.up.push(u)}else W.up.push(mku('bos',c.w));c.u=0});
  while(W.up.length&&W.up[W.up.length-1].k=='bos')W.up.pop()}
-function norm(s){s.walls.forEach(migU);const fx=v=>{if(!String(v).startsWith('lk')||STYLES[v])return v;const o=LKOLD(v);return STYLES[o]?o:'duz'};if(s.lkv){const v={};Object.keys(s.lkv).forEach(k=>{if(STYLES[k])v[k]=s.lkv[k]});s.lkv=v}['sa','su','sb'].forEach(k=>{if(s[k])s[k]=fx(s[k])});s.walls.forEach(W=>[...W.cols,...(W.up||[])].forEach(c=>{if(c.ov&&c.ov.style)c.ov.style=fx(c.ov.style)}));s.row=s.row=='ust'?'ust':'alt';s.sa=s.sa||s.style||'duz';s.su=s.su||s.style||'duz';s.sb=s.sb||s.style||'duz';s.walls.forEach(W=>{W.type=W.type||'duvar';W.cols.forEach(c=>{c.h=c.h||DH[c.k];c.uh=c.uh||70;c.cs=c.cs||'r';c.sh=c.sh||'L';c.d=c.d||(isFr(c)?65:60)})});if(!s.H){s.H=230;s.tac=8;const ft=230-8-((s.bz)||15);s.walls.forEach(W=>{W.cols.forEach(c=>{if(TALL.includes(c.k)&&[195,200,210,215].includes(c.h))c.h=ft;if(c.k=='buz'){if(c.h>=200)c.h=180;c.fu=1}});(W.up||[]).forEach(u=>{if(u.h==70)u.h=72})})}return s}
+function norm(s){s.walls.forEach(migU);const fx=v=>{if(!String(v).startsWith('lk')||STYLES[v])return v;const o=LKOLD(v);return STYLES[o]?o:'duz'};if(s.lkv){const v={};Object.keys(s.lkv).forEach(k=>{if(STYLES[k])v[k]=s.lkv[k]});s.lkv=v}['sa','su','sb'].forEach(k=>{if(s[k])s[k]=fx(s[k])});s.walls.forEach(W=>[...W.cols,...(W.up||[])].forEach(c=>{if(c.ov&&c.ov.style)c.ov.style=fx(c.ov.style)}));s.row=s.row=='ust'?'ust':'alt';s.sa=s.sa||s.style||'duz';s.su=s.su||s.style||'duz';s.sb=s.sb||s.style||'duz';s.walls.forEach(W=>{W.type=W.type||'duvar';W.cols.forEach(c=>{c.h=c.h||DH[c.k];c.uh=c.uh||70;c.cs=c.cs||'r';c.sh=c.sh||'L';c.d=c.d||(isFr(c)?65:60);if(c.k=='kose'&&c.d>60)c.d=60})});if(!s.H){s.H=230;s.tac=8;const ft=230-8-((s.bz)||15);s.walls.forEach(W=>{W.cols.forEach(c=>{if(TALL.includes(c.k)&&[195,200,210,215].includes(c.h))c.h=ft;if(c.k=='buz'){if(c.h>=200)c.h=180;c.fu=1}});(W.up||[]).forEach(u=>{if(u.h==70)u.h=72})})}return s}
 function def(){return{H:232,tac:5,bz:15,walls:[{len:400,cols:[mk('buz',70),mk('firin'),mk('kapak'),mk('evye'),mk('cekmece'),mk('ocak')],up:[mku('bos',70),mku('bos',60),mku('ust'),mku('ust',80),mku('ust'),mku('dav')]}],row:'alt',w:0,sel:-1,tab:0,style:'duz',cb:'#2B3A55',cw:'#ECEAE4',ct:'#2B3A55',tcm:'b',top:'#222427',hd:'#B8943F',acc:{},rate:0}}
 function load(){try{const s=JSON.parse(localStorage.getItem('mk1'));return s&&s.walls&&s.walls.length?s:null}catch(e){return null}}
 function save(){try{localStorage.setItem('mk1',JSON.stringify(S))}catch(e){}}
@@ -349,11 +350,11 @@ function colSVG(c,i,x){
   else if(DZK.includes(c.k)){let yy=T;dzParts(c).forEach(p=>{o+=p.t=='c'?pn(x,yy,w,p.h,col,st,'t'):dr(x,yy,w,p.h,col,st,HA());if(GOLA())o+=`<rect x="${x}" y="${yy}" width="${w}" height="2.4" fill="${S.hd}"/><rect x="${x}" y="${yy+1.6}" width="${w}" height=".8" fill="#000" fill-opacity=".35"/>`;yy+=p.h})}
   else if(c.k=='bulasik'){if(c.bt=='solo'){const xs=x+(w-60)/2;o+=`<rect x="${xs+.4}" y="${T}" width="59.2" height="${250-T}" fill="#1b1c1e" stroke="#000" stroke-width=".5"/><rect x="${xs+.4}" y="${T}" width="59.2" height="9" fill="#0c0d0e"/><rect x="${xs+4}" y="${T+3}" width="9" height="3" rx=".5" fill="#2d6f8e" fill-opacity=".8"/>`}else o+=`<rect x="${x+.5}" y="${T}" width="${w-1}" height="10" fill="#151618" stroke="#000" stroke-width=".4"/><rect x="${x+4}" y="${T+3.5}" width="9" height="3" rx=".5" fill="#2d6f8e" fill-opacity=".8"/>`+pn(x,T+10,w,h-10,col,st,'t')}
   else if(c.k=='firinalt'){o+=apSVG('firin',x,T,w,60)+pn(x,T+60,w,h-60,col,st,'t');if(GOLA())o+=`<rect x="${x}" y="${T}" width="${w}" height="2.4" fill="${S.hd}"/>`}
-  else if(c.k=='kose'){const b=Math.min(30,w/2),L=c.cs=='l';o+=pn(x+(L?b:0),T,w-b,h,col,st,HA()=='t'?'t':(HA().length==2?'t':'')+(L?'r':'l'))+bl(L?x:x+w-b,T,b,h,col)}
+  else if(c.k=='kose'){const b=KBL(w),L=c.cs=='l';o+=pn(x+(L?b:0),T,w-b,h,col,st,HA()=='t'?'t':(HA().length==2?'t':'')+(L?'r':'l'))+bl(L?x:x+w-b,T,b,h,col)}
   else if(c.k=='raf')o+=os(x,T,w,h,col);
   {const hs=((HYM||{})[`${S.w}|a|${i}`]||{s:''}).s,tl=c.k!='sutun'&&hs.includes('l')?PT:0,tr=c.k!='sutun'&&hs.includes('r')?PT:0;o+=`<rect x="${x-tl}" y="${T-4}" width="${w+tl+tr}" height="4" fill="${S.top}"/>`}
   if(c.k=='evye')o+=`<path d="M${x+w/2} ${T-4}v-14q0-8 8-8" fill="none" stroke="#C9CCCF" stroke-width="2"/>`;
-  if(c.u&&!isl){const u=c.uh,Y=YT();if(c.k=='ocak')o+=`<rect x="${x+w*.3}" y="${Y}" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${Y+u} ${x+w-3},${Y+u} ${x+w*.72},${Y+u*.4} ${x+w*.28},${Y+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;else if(c.ut=='raf')o+=os(x,Y,w,u,wc);else if(c.k=='kose'){const b=Math.min(30,w/2),L=c.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,su,'b')+bl(L?x:x+w-b,Y,b,u,wc)}else o+=dr(x,Y,w,u,wc,su,'b')}
+  if(c.u&&!isl){const u=c.uh,Y=YT();if(c.k=='ocak')o+=`<rect x="${x+w*.3}" y="${Y}" width="${w*.4}" height="${u*.4}" fill="#8a8c90"/><polygon points="${x+3},${Y+u} ${x+w-3},${Y+u} ${x+w*.72},${Y+u*.4} ${x+w*.28},${Y+u*.4}" fill="#9a9ca0" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`;else if(c.ut=='raf')o+=os(x,Y,w,u,wc);else if(c.k=='kose'){const b=KBU(w),L=c.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,su,'b')+bl(L?x:x+w-b,Y,b,u,wc)}else o+=dr(x,Y,w,u,wc,su,'b')}
  }else if(c.k=='sutunb'){o+=sutSVG(x,T,w,h,col,c.sm)}else if(c.k=='kosb'){const b=Math.min(30,w/2),L=c.cs=='l',X=x+(L?b:0);o+=pn(X,T,w-b,h/2,col,st,L?'r':'l')+pn(X,T+h/2,w-b,h/2,col,st,L?'r':'l')+bl(L?x:x+w-b,T,b,h,col)}else if(c.k=='rafb')o+=os(x,T,w,h,col);else if(c.k=='boy')o+=dr(x,T,w,h/2,col,st,'r')+dr(x,T+h/2,w,h/2,col,st,'r');
  else if(c.k=='firin'){const L=tallLay(c);let yy=T;if(L.top>0)o+=dr(x,yy,w,L.top,col,st,'r');yy+=L.top;[...L.A].reverse().forEach(a=>{o+=apSVG(a,x,yy,w,APPL[a].h);yy+=APPL[a].h});L.bot.forEach(b=>{o+=pn(x,yy,w,b,col,st,'t');yy+=b})}
  else{const P=c.k=='buzb'?PT:0,B=250-h;if(P)o+=`<rect x="${x}" y="${YT()}" width="${P}" height="${250-YT()}" fill="${col}" stroke="rgba(0,0,0,.35)" stroke-width=".5"/><rect x="${x+w-P}" y="${YT()}" width="${P}" height="${250-YT()}" fill="${col}" stroke="rgba(0,0,0,.35)" stroke-width=".5"/>`;x+=P;const w0=w;{const w=w0-2*P;o+=`<rect x="${x+.5}" y="${B}" width="${w-1}" height="${h}" fill="#C3C7CA" stroke="rgba(0,0,0,.35)" stroke-width=".6"/><line x1="${x}" x2="${x+w}" y1="${B+h*.52}" y2="${B+h*.52}" stroke="rgba(0,0,0,.4)"/><rect x="${x+w-6}" y="${B+h*.1}" width="1.6" height="30" fill="#7c8083"/><rect x="${x+w-6}" y="${B+h*.58}" width="1.6" height="30" fill="#7c8083"/>`}x-=P;
@@ -371,7 +372,7 @@ function upSVG(m,i,x){const w=m.w,u=m.h,st=m.ov.style||S.su,wc=m.ov.col||S.cw;co
  else if(m.k=='usutun')o+=sutSVG(x,Y,w,u,wc,m.sm);
  else if(m.k=='dav'&&(m.dt||'sie')!='sie')o+=lkDavSVG(m.dt,x,Y,w,u,wc);
  else if(m.k=='klapa')o+=pn(x,Y,w,u,wc,st,HK());
- else if(m.k=='ukose'){const b=Math.min(30,w/2),L=m.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,st,HU()=='b'?'b':(HU().length==2?'b':'')+(L?'r':'l'))+bl(L?x:x+w-b,Y,b,u,wc)}
+ else if(m.k=='ukose'){const b=KBU(w),L=m.cs=='l';o+=pn(x+(L?b:0),Y,w-b,u,wc,st,HU()=='b'?'b':(HU().length==2?'b':'')+(L?'r':'l'))+bl(L?x:x+w-b,Y,b,u,wc)}
  else o+=dr(x,Y,w,u,wc,st,HU());
  if(m.k=='dav'&&TAC()&&(m.dt||'sie')[0]!='a')o+=`<rect x="${x}" y="${Y}" width="${w}" height="1.8" fill="${tacCol()[0]}" stroke="rgba(0,0,0,.45)" stroke-width=".4"/>`;
  {const hs=(HYM||{})[`${S.w}|u|${i}`];if(hs)[...hs.s].forEach(sx=>{const ii=(hs.in||'').includes(sx);o+=`<rect x="${sx=='l'?(ii?x:x-PT):(ii?x+w-PT:x+w)}" y="${Y}" width="${PT}" height="${u}" fill="${hs.col}" stroke="#000" stroke-opacity=".55" stroke-width=".6"/>`})}
@@ -379,7 +380,7 @@ function upSVG(m,i,x){const w=m.w,u=m.h,st=m.ov.style||S.su,wc=m.ov.col||S.cw;co
  o+=`<text x="${x+w/2}" y="${250-HT()-3}" text-anchor="middle" font-size="8" fill="var(--mute)">${w}</text>`;
  if(S.row=='ust'&&i==S.sel)o+=`<rect x="${x}" y="${Y-4-TAC()}" width="${w}" height="${u+8+TAC()}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
  return o+'</g>'}
-function offU(wi){const A=S.walls,W=A[wi];if(W.type=='ada')return 0;const dv=A.filter(a=>a.type=='duvar'),k=dv.indexOf(W);if(k<1)return 0;const M=dv[0].up||[],m=k==1?M[M.length-1]:M[0];return m&&m.k!='bos'?m.d:0}
+function offU(wi){const A=S.walls,W=A[wi];if(W.type=='ada')return 0;const dv=A.filter(a=>a.type=='duvar'),k=dv.indexOf(W);if(k<1)return 0;const M=dv[0].up||[],m=k==1?M[M.length-1]:M[0];return m&&m.k=='ukose'?m.d:off(wi)}
 const lp=(c,x,y)=>{const a=Math.min(60,c.w-10,c.d-10),w=c.w,d=c.d;return c.cs=='l'?`M${x} ${y}h${w}v${a}h${-(w-a)}v${d-a}h${-a}z`:`M${x} ${y}h${w}v${d}h${-a}v${-(d-a)}h${-(w-a)}z`};
 function drawPlan(){
  const A=S.walls;if(A.length<2){$('#pv').innerHTML='';return}
@@ -387,7 +388,7 @@ function drawPlan(){
  let o='',lb=[],H=D+120;
  A.forEach((W,wi)=>{let p=0,g='';const t=W.type=='ada'?3:dv.indexOf(wi),v=t==1||t==2,f=off(wi);
   W.cols.forEach((c,i)=>{p=HP.POS[`${wi}|a`][i]-f;const a=wi==S.w&&i==S.sel,x=[p,T-c.d,0,(T-W.len)/2+p][t],y=[0,f+p,f+p,D+110][t];
-   g+=`<${t==0&&c.k=='kose'&&c.sh=='L'?`path d="${lp(c,x,y)}"`:`rect x="${x}" y="${y}" width="${v?c.d:c.w}" height="${v?c.w:c.d}"`} data-w="${wi}" data-i="${i}" fill="${K[c.k].t=='alt'?S.cb:S.ct}" stroke="${a?'var(--acc)':'rgba(0,0,0,.45)'}" stroke-width="${a?4:1.5}" style="cursor:pointer"/>`;{const hs=HP[`${wi}|a|${i}`];if(hs)[...hs.s].forEach(sx=>{const q=sx=='l'?-PT:c.w;g+=`<rect x="${v?x:x+q}" y="${v?y+q:y}" width="${v?c.d:PT}" height="${v?PT:c.d}" fill="${hs.col}" stroke="rgba(0,0,0,.6)" stroke-width="1"/>`})}p+=c.w});
+   g+=`<${t==0&&c.k=='kose'&&c.sh=='L'&&c.d>60?`path d="${lp(c,x,y)}"`:`rect x="${x}" y="${y}" width="${v?c.d:c.w}" height="${v?c.w:c.d}"`} data-w="${wi}" data-i="${i}" fill="${K[c.k].t=='alt'?S.cb:S.ct}" stroke="${a?'var(--acc)':'rgba(0,0,0,.45)'}" stroke-width="${a?4:1.5}" style="cursor:pointer"/>`;{const hs=HP[`${wi}|a|${i}`];if(hs)[...hs.s].forEach(sx=>{const q=sx=='l'?-PT:c.w;g+=`<rect x="${v?x:x+q}" y="${v?y+q:y}" width="${v?c.d:PT}" height="${v?PT:c.d}" fill="${hs.col}" stroke="rgba(0,0,0,.6)" stroke-width="1"/>`})}p+=c.w});
   if(v)H=Math.max(H,W.len,f+p);if(t==3)H=Math.max(H,D+110+Math.max(60,...W.cols.map(c=>c.d)));
   lb.push([wn(W,wi),[[T/2,D/2],[T-30,Math.max(W.len,f+p)/2+f/2],[30,Math.max(W.len,f+p)/2+f/2],[T/2,D+145]][t]]);o+=`<g opacity="${wi==S.w?1:.55}">${g}</g>`});
  const r=(S.or||0)%4,vw=r%2?H:T,vh=r%2?T:H,tf=['',`translate(${H} 0) rotate(90)`,`translate(${T} ${H}) rotate(180)`,`translate(0 ${T}) rotate(270)`][r],px=(x,y)=>[[x,y],[H-y,x],[T-x,H-y],[y,T-x]][r],mx=S.mir?`translate(${vw} 0) scale(-1 1)`:'',lt=lb.map(([n,[x,y]])=>{let [a,b]=px(x,y);if(S.mir)a=vw-a;return `<text x="${a}" y="${b}" text-anchor="middle" font-size="${Math.max(12,T/28)}" fill="var(--ink)" stroke="var(--wallbg)" stroke-width="3" paint-order="stroke" pointer-events="none">${n}</text>`}).join('');
@@ -414,7 +415,32 @@ function drawSVG(){HYM=hyMap();
  if(e-W.len>.05)o+=`<line x1="${W.len}" x2="${W.len}" y1="20" y2="250" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="4 3"/>`;
  {const t=250-HT(),dm=(y1,y2,lb)=>`<line x1="-12" x2="-12" y1="${y1}" y2="${y2}" stroke="var(--mute)" stroke-width=".7"/><line x1="-15" x2="-9" y1="${y1}" y2="${y1}" stroke="var(--mute)" stroke-width=".7"/><line x1="-15" x2="-9" y1="${y2}" y2="${y2}" stroke="var(--mute)" stroke-width=".7"/><text x="-14" y="${(y1+y2)/2}" font-size="7" fill="var(--mute)" text-anchor="middle" transform="rotate(-90 -14 ${(y1+y2)/2})">${lb}</text>`;o+=dm(t,250,HT()+' cm')}
  $('#sv').innerHTML=`<svg viewBox="-20 ${Math.min(0,240-HT())} ${L+26} ${264-Math.min(0,240-HT())}" role="img" aria-label="Mutfak cephe görünüşü" style="width:100%;display:block">${o}</svg>`}
-$('#sv').onclick=e=>{const g=e.target.closest('[data-i]');if(g){S.row=g.dataset.r=='u'?'ust':'alt';S.sel=+g.dataset.i;S.tab=0;R()}};
+$('#sv').onclick=e=>{if(Date.now()-DGskip<350)return;const g=e.target.closest('[data-i]');if(g){S.row=g.dataset.r=='u'?'ust':'alt';S.sel=+g.dataset.i;S.tab=0;R()}};
+let DG=null,DGskip=0;
+(()=>{const sv=$('#sv');sv.style.webkitUserSelect='none';sv.style.userSelect='none';sv.style.webkitTouchCallout='none';
+ const arr=r=>{const W=S.walls[S.w];return r=='u'?(W.up||[]):W.cols};
+ const isC=m=>!!m&&(m.k.startsWith('kos')||m.k=='ukose');
+ const svx=e=>{const s=sv.querySelector('svg');const p=s.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(s.getScreenCTM().inverse()).x};
+ const tgt=(r,i,x)=>{const A=arr(r),P=(HYM&&HYM.POS[`${S.w}|${r}`])||[],o=[];A.forEach((m,k)=>{if(k!=i)o.push([P[k],m.w])});let j=0;o.forEach(([p,w])=>{if(p+w/2<x)j++});
+  if(isC(A[A.length-1])&&i!=A.length-1)j=Math.min(j,o.length-1);if(isC(A[0])&&i!=0)j=Math.max(j,1);j=Math.max(0,Math.min(j,o.length));
+  const mx=!o.length?x:j==0?o[0][0]:o[j-1][0]+o[j-1][1];return[j,mx]};
+ const end=()=>{if(!DG)return;clearTimeout(DG.t);if(DG.g)DG.g.style.opacity='';const l=document.getElementById('dgmk');if(l)l.remove();DG=null};
+ sv.addEventListener('pointerdown',e=>{if(e.button>0||$('#sv').style.display=='none')return;const g=e.target.closest('[data-i]');if(!g)return;
+  const r=g.dataset.r=='u'?'u':'a',i=+g.dataset.i,A=arr(r);if(!A[i]||isC(A[i])||A.length<2)return;
+  DG={r,i,g,x0:e.clientX,y0:e.clientY,on:false,j:i};
+  DG.t=setTimeout(()=>{if(!DG)return;DG.on=true;try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}g.style.opacity='.45';
+   const s=sv.querySelector('svg'),m=A[i],y=r=='u'?[YT()-6,YT()+m.h+6]:[250-BZH()-m.h-8,252],ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+   ln.id='dgmk';ln.setAttribute('y1',y[0]);ln.setAttribute('y2',y[1]);ln.setAttribute('stroke','var(--acc)');ln.setAttribute('stroke-width','3');ln.setAttribute('stroke-linecap','round');
+   const P=(HYM&&HYM.POS[`${S.w}|${r}`])||[];ln.setAttribute('x1',P[i]);ln.setAttribute('x2',P[i]);s.appendChild(ln);try{sv.setPointerCapture(e.pointerId)}catch(_){}},450)});
+ sv.addEventListener('pointermove',e=>{if(!DG)return;if(!DG.on){if(Math.hypot(e.clientX-DG.x0,e.clientY-DG.y0)>10)end();return}
+  e.preventDefault();const[j,mx]=tgt(DG.r,DG.i,svx(e));DG.j=j;const l=document.getElementById('dgmk');if(l){l.setAttribute('x1',mx);l.setAttribute('x2',mx)}});
+ sv.addEventListener('pointerup',()=>{if(!DG)return;if(!DG.on){end();return}DGskip=Date.now();const{r,i,j}=DG;end();
+  const A=arr(r);if(j!=i){const m=A.splice(i,1)[0];A.splice(j,0,m)}S.row=r=='u'?'ust':'alt';S.sel=j;S.tab=0;MATR=null;R()});
+ sv.addEventListener('pointercancel',end);
+ sv.addEventListener('touchmove',e=>{if(DG&&DG.on)e.preventDefault()},{passive:false});
+ sv.addEventListener('contextmenu',e=>{if(DG)e.preventDefault()});
+})();
+
 
 const cur=()=>rowL(S.walls[S.w])[S.sel];
 function add(k){const W=S.walls[S.w],L=rowL(W),m=KU[k]?mku(k):mk(k);if(k=='bulasik')m.bt='yari';L.push(m);S.sel=L.length-1;if(k=='ocak'&&L===W.cols&&W.type!='ada')hoodSync(S.w,L.length-1);R()}
@@ -434,7 +460,7 @@ function adaTog(){const j=S.walls.findIndex(W=>W.type=='ada');
  S.w=0;S.sel=-1;R()}
 function setCs(v){cur().cs=v;R()}
 function setW(v){const c=cur(),W=S.walls[S.w],had=c.k=='ocak'&&S.row!='ust'&&W.type!='ada'&&c.dv!==0&&hoodOK(S.w,S.sel);if(had){const{segs,a}=hoodAt(S.w,S.sel);const e=segs.find(([s0,e0,m])=>m.k=='dav'&&Math.abs(s0-a)<.5);if(e)e[2].k='bos'}c.w=Math.min(200,Math.max(20,+v||60));if(had){W.up=W.up.filter(m=>!(m.k=='bos'&&m.w==0));hoodSync(S.w,S.sel)}R()}
-function setD(f,v){const c=cur(),u=isU(c),a=!u&&K[c.k].t=='alt',r=u?{h:[20,Math.min(150,TOPC()-100)],d:[20,70]}[f]:{h:a?[50,120]:isFr(c)?[120,TOPC()-2]:[150,TOPC()-BZH()],uh:[30,120],d:[30,120]}[f];c[f]=Math.min(r[1],Math.max(r[0],+v||r[0]));R()}
+function setD(f,v){const c=cur(),u=isU(c),a=!u&&K[c.k].t=='alt',r=u?{h:[20,Math.min(150,TOPC()-100)],d:[20,70]}[f]:{h:a?[50,120]:isFr(c)?[120,TOPC()-2]:[150,TOPC()-BZH()],uh:[30,120],d:[30,c.k=='kose'?60:120]}[f];c[f]=Math.min(r[1],Math.max(r[0],+v||r[0]));R()}
 function setU(b){cur().u=b?1:0;R()}
 function ovs(v){if(v)cur().ov.style=v;else delete cur().ov.style;R()}
 function ovc(h){if(h)cur().ov.col=h;else delete cur().ov.col;R()}
@@ -466,13 +492,13 @@ function pMod(){
   if(c.k=='bulasik')h+=`<p class="lb">Bulaşık makinesi tipi</p><div class="row">${[['yari','Yarı ankastre (60 cm)',60],['solo','Solo (61 cm boşluk)',61]].map(([v,t,ww])=>`<button class="chip ${(c.bt||'yari')==v?'on':''}" onclick="cur().bt='${v}';cur().w=${ww};R()">${t}</button>`).join('')}</div><p class="note">${c.bt=='solo'?'Solo makine için tezgah altında 61 cm boşluk bırakılır, altına baza gelmez. Makine fiyatını teklifteki satıra gir.':'Yarı ankastre makinenin kumanda paneli üstte görünür, altında alt dolap renginde kapak paneli olur. Baza önünden devam eder.'}</p>`;
   if(up&&c.k=='dav'){const dt=c.dt||'sie';h+=`<p class="lb">Davlumbaz modeli: <b>${dtName(dt)}</b></p><div class="lkg">${DAVT.map(([id,n])=>`<button class="lki ${dt==id?'on':''}" onclick="cur().dt='${id}';R()" aria-label="${n}">${id=='sie'?`<svg viewBox="0 0 60 60" width="60" height="60"><rect x="22" y="4" width="16" height="26" fill="#1b1c1e"/><polygon points="4,52 56,52 56,46 48,30 12,30 4,46" fill="#111213"/></svg>`:`<img src="${LTI[id]}" alt="" style="object-fit:contain">`}<span>${n.replace('Lake ','').replace('Aspiratör kapağı ','Asp. ')}</span></button>`).join('')}</div><p class="note">${dt=='sie'?`${APPL.dav.n} ${APPL.dav.m}.`:dt[0]=='d'?'Lake Kapak ahşap davlumbaz, kapak renginde, özel ölçüyle üretilir. İçine gizli aspiratör motoru takılır; teklifte davlumbaz ve motor ayrı satırdır.':'Gizli (ankastre) aspiratörün önüne Lake Kapak ön paneli. Panel kapak renginde gelir; teklifte panel ve motor ayrı satırdır.'} Altına Ocak altı modülünü hizala.</p>`}
   if(SUTK.includes(c.k)){const sm=c.sm||'s1';h+=`<p class="lb">Sütun modeli: <b>${smName(sm)}</b></p><div class="lkg">${SUTM.map(([id,n])=>`<button class="lki ${sm==id?'on':''}" onclick="cur().sm='${id}';R()" aria-label="${n}"><img src="${LTI[id]}" alt="" style="object-fit:contain"><span>${n.replace('Lake ','')}</span></button>`).join('')}</div><p class="note">Lake Kapak tamamlayıcı ürün. Sütunlar dolapların arasına veya sıra sonuna, kapak renginde dekoratif dikme olarak konur. Gövdesi yoktur, malzeme listesine girmez; teklifte adet olarak gelir.</p>`}
-  if(c.k=='kose')h+=`<p class="lb">Köşe tipi (planda)</p><div class="row">${[['L','L şekilli'],['kare','Kare']].map(([a,b])=>`<button class="chip ${c.sh==a?'on':''}" onclick="cur().sh='${a}';R()">${b}</button>`).join('')}</div>`;
+  if(c.k=='kose'&&c.d>60)h+=`<p class="lb">Köşe tipi (planda)</p><div class="row">${[['L','L şekilli'],['kare','Kare']].map(([a,b])=>`<button class="chip ${c.sh==a?'on':''}" onclick="cur().sh='${a}';R()">${b}</button>`).join('')}</div>`;
   if(up&&c.k!='bos'&&c.k!='dav'&&S.led!==0)h+=`<p class="note">Altında LED aydınlatma var (render ayarından kapatılabilir).</p>`;
   if(!['bos','dav','uraf','raf','rafb','buz','sutun','sutunb','usutun'].includes(c.k))h+=`<label class="f">Bu modülün kapak modeli<select onchange="ovs(this.value)"><option value="">Genel ayar: ${STYLES[up?S.su:k.t=='alt'?S.sa:S.sb]}</option>${BASIC.map(a=>`<option value="${a}" ${c.ov.style==a?'selected':''}>${STYLES[a]}</option>`).join('')}${lkOpts(c.ov.style)}</select></label>${lkCur(c.ov.style||'')}<div class="row"><button class="chip ${PK=='ov'?'on':''}" onclick="PK=PK=='ov'?null:'ov';R()">${PK=='ov'?'Kataloğu kapat':'Lake Kapak kataloğundan seç'}</button></div>`+(PK=='ov'?lkPicker('ov',c.ov.style):'')+camSec('ov',c.ov.style);
   if(!['buzb','bos','raf','rafb','uraf','bulasik'].includes(c.k)&&!(c.k=='dav'&&(c.dt||'sie')[0]=='a')){const hm=hyCalc(),key=`${S.w}|${up?'u':'a'}|${S.sel}`,au=hm.AU[key],fc=c.ov.col||(up?S.cw:K[c.k].t=='alt'?S.cb:S.ct),sn=v=>v?[...v].map(x=>HYN[x]).join(' ve '):'yok';
    h+=`<p class="lb">${c.k=='buz'?'Boy dikme (buzdolabı yan paneli, tam boy)':c.k=='dav'?'Davlumbaz yan dikmesi (üst dolap boyunda, taç renginde)':'Harici yan (kapak renginde dış yan panel)'}</p>`+(au===undefined?`<p class="note">Gövde rengi (${nm(COLORS,matS().gc)}) ile kapak rengi aynı, harici yan gerekmiyor.</p>`:`<div class="row">${[[null,'Otomatik: '+sn(au)],['yok','Yok'],['l','Sol'],['r','Sağ'],['lr','İki yan']].map(([v,t])=>`<button class="chip ${(c.hy??null)===v?'on':''}" onclick="cur().hy=${v===null?'undefined':`'${v}'`};R()">${t}</button>`).join('')}</div><p class="note">Otomatik: davlumbaz ve boşluk yanları, sıra sonları, boy dolabın tezgah üstü görünen yanı. Duvara dayanan yanı Yok ya da tek tarafla düzelt.</p>`)}
   if(!['buz','bos','dav'].includes(c.k))h+=`<p class="lb">Bu modüle özel renk</p><div class="row"><button class="chip" onclick="ovc('')">Genel renge dön</button>${sw(COLORS,c.ov.col,'ovc(')}</div>`;
-  h+=`<div class="row"><button class="chip" onclick="mv(-1)">Sola al</button><button class="chip" onclick="mv(1)">Sağa al</button><button class="chip" onclick="dup()">Kopyala</button><button class="chip" onclick="del()">Sil</button></div></div>`}
+  h+=`<div class="row"><button class="chip" onclick="mv(-1)">Sola al</button><button class="chip" onclick="mv(1)">Sağa al</button><button class="chip" onclick="dup()">Kopyala</button><button class="chip" onclick="del()">Sil</button></div><p class="note">Çizimde modülün üzerine basılı tutup sürükleyerek de yerini değiştirebilirsin.</p></div>`}
  return h}
 
 function bzSec(){const b=BAZAS.find(x=>x[0]==bzId())||BAZAS[0],tm=S.tcm||'u';
@@ -505,7 +531,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const nf=n=>n.toFixed(2).replace('.',',');
 function mtr(){const m={},add=(k,q,a)=>{m[k]=m[k]||{q:0,a:0};m[k].q+=q;m[k].a+=a};
  S.walls.forEach(W=>W.cols.forEach(c=>{const t=K[c.k].t,o=c.ov.style;
-  if(t=='alt'){if(c.k!='bulasik'&&c.k!='sutun')add('alt|'+(c.k=='raf'?'acik':o||S.sa),c.w,c.w*c.h/1e4);add('tez',c.w+(c.k=='kose'?c.d:0),0);
+  if(t=='alt'){if(c.k!='bulasik'&&c.k!='sutun')add('alt|'+(c.k=='raf'?'acik':o||S.sa),c.w,c.w*c.h/1e4);add('tez',c.w,0);
    if(c.u&&W.type!='ada'){if(c.k=='ocak')add('dav',1,0);else add('ust|'+(c.ut=='raf'?'acik':o||S.su),c.w,c.w*c.uh/1e4)}}
   else if(c.k=='sutunb'){}
   else if(c.k=='buzb')add('buzb',1,0);
@@ -626,7 +652,7 @@ function modParts(c,isl,B0,BU){let B=B0;
   else{B(0,y0,0,w,y1,d,c.k=='kose'?col:GC,0);
    if(DZK.includes(c.k)){let yy=y1;dzParts(c).forEach(p=>{if(p.t=='c')door(0,yy-p.h,w,yy,col,st,'t');else dd(0,yy-p.h,w,yy,col,st,HA());if(GOLA())B(0,yy-2.4,d-2.5,w,yy,d+.4,S.hd,2);yy-=p.h})}
    else if(c.k=='firinalt'){ap3D('firin',y1-60,y1);door(0,y0,w,y1-60,col,st,'t');if(GOLA())B(0,y1-2.4,d-2.5,w,y1,d+.4,S.hd,2)}
-   else if(c.k=='kose'){const b=Math.min(30,w/2),Lf=c.cs=='l';door(Lf?b:0,y0,Lf?w:w-b,y1,col,st,HA()=='t'?'t':(HA().length==2?'t':'')+(Lf?'r':'l'));blind(Lf?0:w-b,y0,Lf?b:w,y1,col,fz)}
+   else if(c.k=='kose'){const b=KBL(w),Lf=c.cs=='l';door(Lf?b:0,y0,Lf?w:w-b,y1,col,st,HA()=='t'?'t':(HA().length==2?'t':'')+(Lf?'r':'l'));blind(Lf?0:w-b,y0,Lf?b:w,y1,col,fz)}
    }
   const tp=y1+4;B(0,y1,0,w,tp,d+3,S.top,3);
   if(c.k=='evye'){B(w*.18,tp,d*.22,w*.82,tp+.3,d*.78,'#8f969b',4);B(w/2-1.2,tp,d*.1,w/2+1.2,tp+28,d*.16,'#C9CCCF',4);B(w/2-1,tp+25,d*.1,w/2+1,tp+28,d*.38,'#C9CCCF',4)}
@@ -637,7 +663,7 @@ function modParts(c,isl,B0,BU){let B=B0;
    else if(c.k=='ocak'){B(2,yb,0,w-2,yb+6,48,'#141516',0);B(2,yb+6,22,w-2,yb+u*.5,30,'#111213',0);B(w*.34,yb+u*.5,0,w*.66,TAC()?UT-1.8:HT(),26,'#1b1c1e',0);B(4,yb+5.5,48,w-4,yb+6,48.3,'#4a4e52',2)}
    else if(c.ut=='raf')open(0,yb,w,UT,35,wc);
    else{B(0,yb,0,w,UT,35,GC,0);const z=35;
-    if(c.k=='kose'){const b=Math.min(30,w/2),Lf=c.cs=='l';door(Lf?b:0,yb,Lf?w:w-b,UT,wc,su,HU()=='b'?'b':(HU().length==2?'b':'')+(Lf?'r':'l'),z);blind(Lf?0:w-b,yb,Lf?b:w,UT,wc,z)}
+    if(c.k=='kose'){const b=KBU(w),Lf=c.cs=='l';door(Lf?b:0,yb,Lf?w:w-b,UT,wc,su,HU()=='b'?'b':(HU().length==2?'b':'')+(Lf?'r':'l'),z);blind(Lf?0:w-b,yb,Lf?b:w,UT,wc,z)}
     else if(c.ut=='klapa')door(0,yb,w,UT,wc,su,HK(),z);else dd(0,yb,w,UT,wc,su,HU(),z)}
    if(TAC())B(0,UT,0,w,UT+TAC(),35+ft,tacCol()[0],0,1,1);if(TAC()&&c.k=='ocak'&&!(c.dt&&c.dt[0]=='a'))B(0,UT-1.8,0,w,UT,35+ft,tacCol()[0],0,1,1)}
  }else{
@@ -1037,7 +1063,7 @@ async function makeOffer(btn){ofDef();if(btn){btn.disabled=true;btn.textContent=
  // 3) ölçü ve malzeme listesi
  page('ÖLÇÜ LİSTESİ');sec('Modüller');
  table([['Duvar',150],['Modül',270],['G × Y × D (cm)',190],['Kapak',270],['Renk',180,'']],mList());
- const tz=S.walls.reduce((a,W)=>a+W.cols.filter(c=>K[c.k].t=='alt').reduce((b,c)=>b+c.w+(c.k=='kose'?c.d:0),0),0);
+ const tz=S.walls.reduce((a,W)=>a+W.cols.filter(c=>K[c.k].t=='alt').reduce((b,c)=>b+c.w,0),0);
  room(80);txt(`Tezgah metrajı: ${(tz/100).toFixed(2).replace('.',',')} mtül · Tezgah: ${topName()} · Kulp: ${nm(HANDLES,S.hd)}${S.led!==0?' · Üst dolap altı LED':''}`,MX,y,19,600);y+=50;
  const acc=[];ACC.forEach((n,i)=>{const a=S.acc[i];if(a&&a.on)acc.push([n,'—',a.q])});(S.sx||[]).forEach(v=>acc.push([v.n,`Starax ${v.k}${v.r?', '+v.r:''}`,v.q]));
  if(acc.length){sec('Aksesuarlar');table([['Ürün',620],['Kod / renk',300],['Adet',140,'right']],acc)}
@@ -1111,7 +1137,7 @@ function matParts(){const M=matS(),t=M.tg/10,P=[],glass=[],HYL=hyCalc();
     if(c.k=='kose')shelves(mod,col,w,D,1);
     if(DZK.includes(c.k)){const P0=dzParts(c),cs=P0.filter(p=>p.t=='c');P0.filter(p=>p.t=='k').forEach(p=>{const n=w>=70?2:1,f=fr(n,w,p.h);front(mod,col,st,f.W,f.H,n,'Kapak');if(p.h>=40&&c.k!='evye')shelves(mod,col,w,D,1)});cs.forEach(p=>front(mod,col,st,w-.3,p.h-.3,1,'Çekmece önü'));if(cs.length)drawers(mod,col,w,D,cs.map(p=>p.h))}
     else if(c.k=='firinalt'){add('raf',M.gc,'Fırın rafı (sabit)',mod,w-2*t,D,1,0,true,1);front(mod,col,st,w-.3,h-60.3,1,'Fırın altı panel')}
-    else if(c.k=='kose'){const b=Math.min(30,w/2);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
+    else if(c.k=='kose'){const b=KBL(w);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
    }else{
     if(c.k=='rafb'){box(mod,col,w,h,D,false,col);shelves(mod,col,w,D,Math.max(1,Math.round(h/35)-1),true);return}
     box(mod,col,w,h,D,false);
@@ -1128,7 +1154,7 @@ function matParts(){const M=matS(),t=M.tg/10,P=[],glass=[],HYL=hyCalc();
    if(u.k=='uraf'){box(mod,col,w,h,D,false,col);shelves(mod,col,w,D,Math.max(1,Math.round(h/35)-1),true);return}
    box(mod,col,w,h,D,false);if(h>=50)shelves(mod,col,w,D,1);
    if(u.k=='klapa')front(mod,col,st,w-.3,h-.3,1,'Klapa kapak');
-   else if(u.k=='ukose'){const b=Math.min(30,w/2);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
+   else if(u.k=='ukose'){const b=KBU(w);front(mod,col,st,w-b-.3,h-.3,1,'Kapak');front(mod,col,st,b-.3,h-.3,1,'Kör panel')}
    else{const n=w>=70?2:1;front(mod,col,st,w/n-.3,h-.3,n,'Kapak')}});
  });
  return{P,glass}}
