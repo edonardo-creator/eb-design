@@ -1,14 +1,14 @@
 {
- "name": "EB Design",
- "short_name": "EB Design",
- "description": "Mutfak tasarım, 3D render ve teklif",
+ "name": "eB Creator",
+ "short_name": "eB Creator",
+ "description": "eB Creator: mutfak tasarım, 3D render ve teklif",
  "lang": "tr",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "any",
  "background_color": "#EDEFEA",
- "theme_color": "#474D52",
+ "theme_color": "#33222A",
  "icons": [
   {
    "src": "icon-192.png",
